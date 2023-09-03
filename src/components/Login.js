@@ -3,6 +3,7 @@ import { Button, Card, Row } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import { Spinner } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 
 const LogIn = () => {
@@ -11,7 +12,7 @@ const LogIn = () => {
   const [isExisting, setIsExisting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const enteredEmail = useRef(null);
   const enteredPassword = useRef(null);
@@ -55,7 +56,7 @@ const LogIn = () => {
           enteredEmail.current.value = "";
           enteredPassword.current.value = "";
           //AuthCtx.login(data.idToken);
-          //navigate("/Profile");
+          navigate("/Home");
           if (isLogIn) {
             alert("Log in successful");
           } else {
@@ -120,14 +121,14 @@ const LogIn = () => {
                   />
                   {isLogIn || isExisting ? (
                     <div className="d-grid login-btn">
-                       <Button variant="outline-light" className="m-2" type="submit">
+                       <Button variant="outline-dark" className="m-2" type="submit">
                       Log In
                     </Button>
                     </div>
                    
                   ) : (
                       <div className="d-grid login-btn">
-                    <Button variant="outline-light" className="m-2" type="submit">
+                    <Button variant="outline-dark" className="m-2" type="submit">
                       Create an Account
                     </Button>
                       </div>
@@ -135,11 +136,12 @@ const LogIn = () => {
                   )}
                   {isLoading && (
                     <div className="spinner-container">
-                      <Spinner animation="grow" variant="light" className="spinner-container" />
+                      <Spinner animation="grow" variant="danger" className="spinner-container" />
                       <Spinner animation="grow" variant="warning" className="spinner-container" />
                       <Spinner animation="grow" variant="info" className="spinner-container" />
                     </div>
-                  )}
+                                  )}
+                                  {/* <Button onClick={submitFormHandler}>Submit</Button> */}
                 </Form.Group>
               </Form>
             </Card.Body>
