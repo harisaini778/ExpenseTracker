@@ -4,12 +4,14 @@ import Navbar from "react-bootstrap/Navbar";
 import { Stack } from "react-bootstrap";
 import { Badge } from "react-bootstrap";
 import { Nav, Button,Alert } from "react-bootstrap";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export const UserDetailsDisplay = () => {
   const [userData, setUserData] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [isClicked, setIsClicked] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
+    const navigate = useNavigate();
 
   useEffect(() => {
     const idToken = localStorage.getItem("token"); // Replace with the actual user's ID token
@@ -75,6 +77,12 @@ export const UserDetailsDisplay = () => {
       });
   };
 
+    const logOutHandeler = () => {
+        localStorage.removeItem("token");
+        navigate("/LogIn");
+        
+    }
+
   return (
     <div>
       <Navbar expand="lg" className="bg-body-tertiary">
@@ -89,7 +97,9 @@ export const UserDetailsDisplay = () => {
                 <div>
                   <Badge>Your profile is now 100% complete.</Badge>
                 </div>
-                <Nav.Link></Nav.Link>
+                              <Nav.Link><Button onClick={logOutHandeler}>
+                                  LogOut
+                              </Button></Nav.Link>
               </Stack>
             </Nav>
           </Navbar.Collapse>
