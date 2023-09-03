@@ -1,13 +1,11 @@
-import React, { useState, useRef} from "react";
+import React, { useState, useRef } from "react";
 import { Button, Card, Row } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import { Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-
-const LogIn = () => {
-
+  export const LogIn = () => {
   const [isLogIn, setIsLogin] = useState(false);
   const [isExisting, setIsExisting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -55,12 +53,14 @@ const LogIn = () => {
           console.log(data);
           enteredEmail.current.value = "";
           enteredPassword.current.value = "";
-          //AuthCtx.login(data.idToken);
+          // AuthCtx.login(data.idToken);
           navigate("/Home");
           if (isLogIn) {
             alert("Log in successful");
           } else {
-            alert("Your account is created successfully. Now you can log in using your credentials");
+            alert(
+              "Your account is created successfully. Now you can log in using your credentials"
+            );
           }
         }
       })
@@ -121,18 +121,16 @@ const LogIn = () => {
                   />
                   {isLogIn || isExisting ? (
                     <div className="d-grid login-btn">
-                       <Button variant="outline-dark" className="m-2" type="submit">
-                      Log In
-                    </Button>
+                      <Button variant="outline-dark" className="m-2" type="submit">
+                        Log In
+                      </Button>
                     </div>
-                   
                   ) : (
-                      <div className="d-grid login-btn">
-                    <Button variant="outline-dark" className="m-2" type="submit">
-                      Create an Account
-                    </Button>
-                      </div>
-                    
+                    <div className="d-grid login-btn">
+                      <Button variant="outline-dark" className="m-2" type="submit">
+                        Create an Account
+                      </Button>
+                    </div>
                   )}
                   {isLoading && (
                     <div className="spinner-container">
@@ -140,8 +138,7 @@ const LogIn = () => {
                       <Spinner animation="grow" variant="warning" className="spinner-container" />
                       <Spinner animation="grow" variant="info" className="spinner-container" />
                     </div>
-                                  )}
-                                  {/* <Button onClick={submitFormHandler}>Submit</Button> */}
+                  )}
                 </Form.Group>
               </Form>
             </Card.Body>
@@ -163,4 +160,4 @@ const LogIn = () => {
   );
 };
 
-export default LogIn;
+// export default LogIn;
