@@ -3,11 +3,13 @@ import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import { Stack } from "react-bootstrap";
 import { Badge } from "react-bootstrap";
-import { Nav } from "react-bootstrap";
+import { Nav, Button,Alert } from "react-bootstrap";
 
 export const UserDetailsDisplay = () => {
   const [userData, setUserData] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isClicked, setIsClicked] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
     const idToken = localStorage.getItem("token"); // Replace with the actual user's ID token
@@ -42,12 +44,43 @@ export const UserDetailsDisplay = () => {
       });
   }, []);
 
+  const verifyEmail = () => {
+    const idToken = localStorage.getItem("token");
+
+    fetch("https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyDoq-H5WEJsZH-kVxJfOdBkOJ5i9U-8150", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        idToken: idToken,
+        requestType: "VERIFY_EMAIL",
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then(() => {
+          console.log("Verification email sent successfully");
+          setIsClicked(true);
+          setShowAlert(true);
+        // Optionally, you can show a success message to the user
+      })
+      .catch((error) => {
+        console.error("Error sending verification email:", error);
+        // Optionally, you can show an error message to the user
+      });
+  };
+
   return (
     <div>
       <Navbar expand="lg" className="bg-body-tertiary">
         <Container>
           <Navbar.Brand>
-            Winners Never Quits, Quitter Never Wins.
+            Happiness is the key to success.
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
@@ -62,7 +95,10 @@ export const UserDetailsDisplay = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <Container>
+          <Container>
+              {isClicked && showAlert && <Alert variant="success" onClose={()=>setShowAlert(false)} dismissible>
+                  Verification link has been sent to your registered email successfully, check your email.
+              </Alert>}
         {isLoading ? (
           <p>Loading...</p>
         ) : (
@@ -73,6 +109,10 @@ export const UserDetailsDisplay = () => {
             <p>Profile Photo URL: {userData.photoUrl}</p>
           </div>
         )}
+              {!isClicked &&<div>
+                  Let's verify your email id
+                  <Button onClick={verifyEmail}>Verify</Button>
+              </div>}
       </Container>
     </div>
   );
