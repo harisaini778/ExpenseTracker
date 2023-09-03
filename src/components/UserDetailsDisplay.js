@@ -7,12 +7,25 @@ import { Nav } from "react-bootstrap";
 
 export const UserDetailsDisplay = () => {
   const [userData, setUserData] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
-    
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Replace with the actual URL for your GET request
-    fetch("http://localhost:9099/emulator/v1/projects/expensetracker-4ddaf/config")
+    const idToken = localStorage.getItem("token"); // Replace with the actual user's ID token
+    if (!idToken) {
+      console.error("User is not authenticated");
+      setIsLoading(false);
+      return;
+    }
+
+    fetch("https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDoq-H5WEJsZH-kVxJfOdBkOJ5i9U-8150", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        idToken: idToken,
+      }),
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -20,7 +33,7 @@ export const UserDetailsDisplay = () => {
         return response.json();
       })
       .then((data) => {
-        setUserData(data);
+        setUserData(data.users[0]);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -42,8 +55,8 @@ export const UserDetailsDisplay = () => {
               <Stack direction="horizontal">
                 <div>
                   <Badge>Your profile is now 100% complete.</Badge>
-                              </div>
-                              <Nav.Link></Nav.Link>
+                </div>
+                <Nav.Link></Nav.Link>
               </Stack>
             </Nav>
           </Navbar.Collapse>
@@ -55,9 +68,9 @@ export const UserDetailsDisplay = () => {
         ) : (
           <div>
             <h2>User Details</h2>
-            <p>Full Name: {userData.fullName}</p>
+            <p>Full Name: {userData.displayName}</p>
             <p>Email: {userData.email}</p>
-            <p>Profile Photo URL: {userData.profilePhotoUrl}</p>
+            <p>Profile Photo URL: {userData.photoUrl}</p>
           </div>
         )}
       </Container>
