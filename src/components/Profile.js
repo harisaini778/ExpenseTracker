@@ -4,11 +4,14 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Stack } from "react-bootstrap";
 import { Badge, Alert } from "react-bootstrap";
+import { UserDetailsDisplay } from "./UserDetailsDisplay";
+import { useNavigate } from "react-router-dom";
 
 export const Profile = () => {
   const [fullName, setFullName] = useState("");
   const [profilePhotoUrl, setProfilePhotoUrl] = useState("");
   const [showAlert, setShowAlert] = useState(false); // State for controlling the alert
+  const navigate = useNavigate();
 
   const handleFullNameChange = (e) => {
     setFullName(e.target.value);
@@ -48,6 +51,9 @@ export const Profile = () => {
       setFullName("");
       setProfilePhotoUrl("");
       setShowAlert(true); // Show the success alert
+
+      // Navigate to UserDetailsDisplay upon successful update
+      navigate("/UserDetailsDisplay");
     } catch (error) {
       console.error("Error updating user profile:", error);
     }
@@ -72,11 +78,8 @@ export const Profile = () => {
             <Nav className="ms-auto">
               <Stack direction="horizontal">
                 <div>
-                  <Badge>Your profile is 64% complete.</Badge>
+                  <Badge>Your profile is 64% complete.Update the profile now!</Badge>
                 </div>
-                <Nav.Link href="#home" style={{ color: "blue" }}>
-                  Click here to complete it now.
-                </Nav.Link>
               </Stack>
             </Nav>
           </Navbar.Collapse>

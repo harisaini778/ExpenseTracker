@@ -15,7 +15,7 @@ export const Home = () => {
           {/* <NavBar /> */}
          <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
-        <Navbar.Brand href="#home">Welocome To The Expense Tracker!!!</Navbar.Brand>
+        <Navbar.Brand>Welocome To The Expense Tracker!!!</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
                       <Nav className="ms-auto">

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { Home } from "./components/Home";
 import { LogIn } from "./components/Login";
 import { Profile} from "./components/Profile";
+import { UserDetailsDisplay } from "./components/UserDetailsDisplay";
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
         <Route path="/Home" element={<Home />} />
         <Route path="/LogIn" element={<LogIn />} />
         <Route path="/Profile" element={<Profile />} />
+         <Route path="/UserDetailsDisplay" element={<UserDetailsDisplay />} />
       </Routes>
     </Router>
   );
