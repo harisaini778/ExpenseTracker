@@ -87,6 +87,9 @@ import { useNavigate } from "react-router-dom";
     e.target.classList.remove("focus");
   };
 
+      const forgetPasswordHandeler = () => {
+          navigate("/ForgetPassword");
+      }
   return (
     <div>
       <Container className="main-body-login">
@@ -132,14 +135,15 @@ import { useNavigate } from "react-router-dom";
                         Create an Account
                       </Button>
                     </div>
-                  )}
+                                  )}
                   {isLoading && (
                     <div className="spinner-container">
                       <Spinner animation="grow" variant="danger" className="spinner-container" />
                       <Spinner animation="grow" variant="warning" className="spinner-container" />
                       <Spinner animation="grow" variant="info" className="spinner-container" />
                     </div>
-                  )}
+                                  )} 
+                                  <div><a onClick={forgetPasswordHandeler}>Forget Password ?</a></div> 
                 </Form.Group>
               </Form>
             </Card.Body>
@@ -152,7 +156,7 @@ import { useNavigate } from "react-router-dom";
                 <p className="existing-account-link" onClick={existingAccountHandler}>
                   New User? Create an account
                 </p>
-              )}
+                          )}                   
             </Card.Footer>
           </Card>
         </Container>
