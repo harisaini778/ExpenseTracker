@@ -1,15 +1,14 @@
-import {React,useState} from "react";
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
+import React, { useState } from "react";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
 import { Stack } from "react-bootstrap";
-import { Badge } from "react-bootstrap";
-
+import { Badge, Alert } from "react-bootstrap";
 
 export const Profile = () => {
-
-      const [fullName, setFullName] = useState("");
+  const [fullName, setFullName] = useState("");
   const [profilePhotoUrl, setProfilePhotoUrl] = useState("");
+  const [showAlert, setShowAlert] = useState(false); // State for controlling the alert
 
   const handleFullNameChange = (e) => {
     setFullName(e.target.value);
@@ -19,73 +18,112 @@ export const Profile = () => {
     setProfilePhotoUrl(e.target.value);
   };
 
+  const updateUserProfile = async () => {
+    try {
+      const idToken = localStorage.getItem("token"); // Replace with the actual user's ID token
+      const response = await fetch(
+        `https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyDoq-H5WEJsZH-kVxJfOdBkOJ5i9U-8150`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            idToken,
+            displayName: fullName,
+            photoUrl: profilePhotoUrl,
+            returnSecureToken: true,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error updating user profile");
+      }
+
+      const data = await response.json();
+      console.log("User details updated successfully:", data);
+
+      // Optionally, you can reset the form fields after submission
+      setFullName("");
+      setProfilePhotoUrl("");
+      setShowAlert(true); // Show the success alert
+    } catch (error) {
+      console.error("Error updating user profile:", error);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // You can perform actions with the entered data here
-    console.log("Full Name:", fullName);
-    console.log("Profile Photo URL:", profilePhotoUrl);
+    // Call the updateUserProfile function to update user details
+    updateUserProfile();
+  };
 
-    // Optionally, you can reset the form fields after submission
-    setFullName("");
-    setProfilePhotoUrl("");
-    };
-    
-    return (
-        <div>
-             <Navbar expand="lg" className="bg-body-tertiary">
+  return (
+    <div>
+      <Navbar expand="lg" className="bg-body-tertiary">
+        <Container>
+          <Navbar.Brand>
+            Winners Never Quits, Quitter Never Wins.
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="ms-auto">
+              <Stack direction="horizontal">
+                <div>
+                  <Badge>Your profile is 64% complete.</Badge>
+                </div>
+                <Nav.Link href="#home" style={{ color: "blue" }}>
+                  Click here to complete it now.
+                </Nav.Link>
+              </Stack>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
       <Container>
-        <Navbar.Brand href="#home">Winners Never Quits,Quitter Never Wins.</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-                      <Nav className="ms-auto">
-                          <Stack direction="horizontal">
-                                <div>
-                                    <Badge>
-                                        Your profile is 64% complete.
-                                    </Badge></div>
-                             <Nav.Link href="#home" style={{color:"blue"}}>Click here to complete it now.</Nav.Link>
-                        </Stack> 
-          </Nav>
-        </Navbar.Collapse>
+        {/* Success Alert */}
+        {showAlert && (
+          <Alert variant="success" onClose={() => setShowAlert(false)} dismissible>
+            User details have been saved successfully!
+          </Alert>
+        )}
+        <div>
+          <h2>Contact Information</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label htmlFor="fullName" className="form-label">
+                Full Name:
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="fullName"
+                value={fullName}
+                onChange={handleFullNameChange}
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="profilePhotoUrl" className="form-label">
+                Profile Photo URL:
+              </label>
+              <input
+                type="url"
+                className="form-control"
+                id="profilePhotoUrl"
+                value={profilePhotoUrl}
+                onChange={handleProfilePhotoUrlChange}
+                required
+              />
+            </div>
+            <button type="submit" className="btn btn-primary">
+              Save
+            </button>
+          </form>
+        </div>
       </Container>
-            </Navbar>
-            <Container>
-         <div>
-      <h2>Contact Information</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="fullName" className="form-label">
-            Full Name:
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="fullName"
-            value={fullName}
-            onChange={handleFullNameChange}
-            required
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="profilePhotoUrl" className="form-label">
-            Profile Photo URL:
-          </label>
-          <input
-            type="url"
-            className="form-control"
-            id="profilePhotoUrl"
-            value={profilePhotoUrl}
-            onChange={handleProfilePhotoUrlChange}
-            required
-          />
-        </div>
-        <button type="submit" className="btn btn-primary">
-          Save
-        </button>
-      </form>
     </div>
-            </Container>
-        </div>
-    )
-}
+  );
+};

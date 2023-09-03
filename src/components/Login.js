@@ -52,7 +52,8 @@ import { useNavigate } from "react-router-dom";
         } else {
           console.log(data);
           enteredEmail.current.value = "";
-          enteredPassword.current.value = "";
+            enteredPassword.current.value = "";
+            localStorage.setItem("token", data.idToken);
           // AuthCtx.login(data.idToken);
           navigate("/Home");
           if (isLogIn) {
