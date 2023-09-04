@@ -5,6 +5,7 @@ import { Stack } from "react-bootstrap";
 import { Badge } from "react-bootstrap";
 import { Nav, Button,Alert } from "react-bootstrap";
 import { Navigate, useNavigate } from "react-router-dom";
+import { ExpenseTracker } from "./ExpenseTracker";
 
 export const UserDetailsDisplay = () => {
   const [userData, setUserData] = useState({});
@@ -123,7 +124,10 @@ export const UserDetailsDisplay = () => {
                   Let's verify your email id
                   <Button onClick={verifyEmail}>Verify</Button>
               </div>}
-      </Container>
+          </Container>
+          <Container>
+              {!isLoading && <ExpenseTracker/> }
+          </Container>
     </div>
   );
 };
