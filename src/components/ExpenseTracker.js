@@ -10,6 +10,7 @@ export const ExpenseTracker = () => {
   const [category, setCategory] = useState("");
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [editExpenseId, setEditExpenseId] = useState(null); // To track which expense is being edited
 
   useEffect(() => {
     // Fetch expenses from Firebase when the component mounts
@@ -76,6 +77,89 @@ export const ExpenseTracker = () => {
     }
   };
 
+  const handleEditClick = (expenseId) => {
+    // Find the expense by ID
+    const expenseToEdit = expenses.find((expense) => expense.id === expenseId);
+
+    if (expenseToEdit) {
+      // Set the expense details in the input fields for editing
+      setMoneySpent(expenseToEdit.moneySpent);
+      setDescription(expenseToEdit.description);
+      setCategory(expenseToEdit.category);
+
+      // Set the expense ID being edited
+      setEditExpenseId(expenseId);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    // Clear the input fields and reset edit state
+    setMoneySpent("");
+    setDescription("");
+    setCategory("");
+    setEditExpenseId(null);
+  };
+
+  const handleSaveEdit = async () => {
+    if (!moneySpent || !description || !category) {
+      // Ensure all fields are filled out
+      alert("Please fill out all fields.");
+      return;
+    }
+
+    const updatedExpense = {
+      moneySpent,
+      description,
+      category,
+    };
+
+    try {
+      // Make a PUT request to update the expense
+      const response = await fetch(`https://expensetracker-4ddaf-default-rtdb.firebaseio.com/expenses/${editExpenseId}.json`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedExpense),
+      });
+
+      if (response.ok) {
+        // Clear the input fields and reset edit state
+        setMoneySpent("");
+        setDescription("");
+        setCategory("");
+        setEditExpenseId(null);
+
+        // Fetch updated expenses from Firebase
+        fetchExpenses();
+        console.log("Expense successfully updated.");
+      } else {
+        console.error("Error editing expense.");
+      }
+    } catch (error) {
+      console.error("Error editing expense:", error);
+    }
+  };
+
+  const handleDeleteExpense = async (expenseId) => {
+    try {
+      // Make a DELETE request to delete the expense
+      const response = await fetch(`https://expensetracker-4ddaf-default-rtdb.firebaseio.com/expenses/${expenseId}.json`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        // Fetch updated expenses from Firebase
+        fetchExpenses();
+        console.log("Expense successfully deleted.");
+      } else {
+        console.error("Error deleting expense.");
+      }
+    } catch (error) {
+      console.error("Error deleting expense:", error);
+    }
+  };
+
   return (
     <div>
       <Navbar expand="lg" className="bg-body-tertiary">
@@ -129,7 +213,14 @@ export const ExpenseTracker = () => {
             {/* Add more categories as needed */}
           </select>
         </div>
-        <button onClick={handleAddExpense} className="btn btn-primary">Add Expense</button>
+        {editExpenseId ? (
+          <>
+            <button onClick={handleSaveEdit} className="btn btn-primary">Save Edit</button>
+            <button onClick={handleCancelEdit} className="btn btn-danger ml-2">Cancel Edit</button>
+          </>
+        ) : (
+          <button onClick={handleAddExpense} className="btn btn-primary">Add Expense</button>
+        )}
       </div>
 
       <div className="container mt-4">
@@ -141,6 +232,17 @@ export const ExpenseTracker = () => {
             {expenses.map((expense) => (
               <li key={expense.id}>
                 Money Spent: {expense.moneySpent}, Description: {expense.description}, Category: {expense.category}
+                {editExpenseId === expense.id ? (
+                  <>
+                    <button onClick={handleSaveEdit}>Save</button>
+                    <button onClick={handleCancelEdit}>Cancel</button>
+                  </>
+                ) : (
+                  <>
+                    <button onClick={() => handleEditClick(expense.id)}>Edit</button>
+                    <button onClick={() => handleDeleteExpense(expense.id)}>Delete</button>
+                  </>
+                )}
               </li>
             ))}
           </ul>
