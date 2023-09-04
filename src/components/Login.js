@@ -5,7 +5,7 @@ import { Container } from "react-bootstrap";
 import { Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-  export const LogIn = () => {
+export const LogIn = () => {
   const [isLogIn, setIsLogin] = useState(false);
   const [isExisting, setIsExisting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -20,9 +20,6 @@ import { useNavigate } from "react-router-dom";
     setIsLoading(true);
     const email = enteredEmail.current.value;
     const password = enteredPassword.current.value;
-    console.log(email);
-    console.log(password);
-    console.log("form submitted");
 
     let url = isLogIn
       ? "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDoq-H5WEJsZH-kVxJfOdBkOJ5i9U-8150"
@@ -45,16 +42,13 @@ import { useNavigate } from "react-router-dom";
       })
       .then((data) => {
         if (data.hasOwnProperty("error")) {
-          console.log(data);
           alert(data.error.message);
           enteredEmail.current.value = "";
           enteredPassword.current.value = "";
         } else {
-          console.log(data);
           enteredEmail.current.value = "";
-            enteredPassword.current.value = "";
-            localStorage.setItem("token", data.idToken);
-          // AuthCtx.login(data.idToken);
+          enteredPassword.current.value = "";
+          localStorage.setItem("token", data.idToken);
           navigate("/Home");
           if (isLogIn) {
             alert("Log in successful");
@@ -67,7 +61,6 @@ import { useNavigate } from "react-router-dom";
       })
       .catch((error) => {
         setIsLoading(false);
-        console.log(error);
         alert("An error occurred. Please try again later.");
         enteredEmail.current.value = "";
         enteredPassword.current.value = "";
@@ -87,21 +80,41 @@ import { useNavigate } from "react-router-dom";
     e.target.classList.remove("focus");
   };
 
-      const forgetPasswordHandeler = () => {
-          navigate("/ForgetPassword");
-      }
+  const forgetPasswordHandler = () => {
+    navigate("/ForgetPassword");
+  };
+
   return (
-    <div>
-      <Container className="main-body-login">
+    <div
+      className="login-container"
+      style={{
+        backgroundColor: "#F2F2F2",
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundImage: `url('https://source.unsplash.com/800x600/?nature')`, // Replace with your image URL
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <Container className="main-body-login" style={{ maxWidth: "400px" }}>
         <Container>
           <Card className="card-body-login">
-            <Card.Header className="card-border-login">
-              {isLogIn || isExisting ? <h2>Sign In</h2> : <h2>Sign Up</h2>}
+            <Card.Header
+              className="card-border-login"
+              style={{ backgroundColor: "#0E4C92", color: "white", textAlign: "center" }}
+            >
+              <h2>Welcome to Your Expense Tracker</h2>
             </Card.Header>
-            <Card.Body className="card-border-login">
+            <Card.Body className="card-border-login" style={{ backgroundColor: "#F9F9F9" }}>
               <Form onSubmit={submitFormHandler}>
                 <Form.Group as={Row} className="mb-3">
-                  <Form.Label className="mb-2">
+                  <Form.Label
+                    className="mb-2"
+                    style={{ textAlign: "start", color: "#0E4C92" }}
+                  >
                     <h5>Your Email</h5>
                   </Form.Label>
                   <Form.Control
@@ -112,7 +125,10 @@ import { useNavigate } from "react-router-dom";
                     ref={enteredEmail}
                     placeholder="Enter your email"
                   />
-                  <Form.Label className="mb-2">
+                  <Form.Label
+                    className="mb-2"
+                    style={{ textAlign: "start", color: "#0E4C92" }}
+                  >
                     <h5>Your Password</h5>
                   </Form.Label>
                   <Form.Control
@@ -125,38 +141,88 @@ import { useNavigate } from "react-router-dom";
                   />
                   {isLogIn || isExisting ? (
                     <div className="d-grid login-btn">
-                      <Button variant="outline-dark" className="m-2" type="submit">
+                      <Button
+                        variant="outline-dark"
+                        className="m-2 btn-sm"
+                        type="submit"
+                      >
                         Log In
                       </Button>
                     </div>
                   ) : (
                     <div className="d-grid login-btn">
-                      <Button variant="outline-dark" className="m-2" type="submit">
+                      <Button
+                        variant="outline-dark"
+                        className="m-2 btn-sm"
+                        type="submit"
+                      >
                         Create an Account
                       </Button>
                     </div>
-                                  )}
+                  )}
                   {isLoading && (
                     <div className="spinner-container">
-                      <Spinner animation="grow" variant="danger" className="spinner-container" />
-                      <Spinner animation="grow" variant="warning" className="spinner-container" />
-                      <Spinner animation="grow" variant="info" className="spinner-container" />
+                      <Spinner
+                        animation="grow"
+                        variant="danger"
+                        className="spinner-container"
+                      />
+                      <Spinner
+                        animation="grow"
+                        variant="warning"
+                        className="spinner-container"
+                      />
+                      <Spinner
+                        animation="grow"
+                        variant="info"
+                        className="spinner-container"
+                      />
                     </div>
-                                  )} 
-                                  <div><a onClick={forgetPasswordHandeler}>Forget Password ?</a></div> 
+                  )}
+                  <div>
+                    <a
+                      onClick={forgetPasswordHandler}
+                      style={{
+                        color: "#0E4C92",
+                        cursor: "pointer",
+                        textAlign: "start",
+                      }}
+                    >
+                      Forget Password ?
+                    </a>
+                  </div>
                 </Form.Group>
               </Form>
             </Card.Body>
-            <Card.Footer className="card-border-login">
+            <Card.Footer
+              className="card-border-login"
+              style={{ backgroundColor: "#F9F9F9" }}
+            >
               {!isExisting ? (
-                <p className="existing-account-link" onClick={existingAccountHandler}>
+                <p
+                  className="existing-account-link"
+                  onClick={existingAccountHandler}
+                  style={{
+                    color: "#0E4C92",
+                    cursor: "pointer",
+                    textAlign: "start",
+                  }}
+                >
                   Log in with an existing account
                 </p>
               ) : (
-                <p className="existing-account-link" onClick={existingAccountHandler}>
+                <p
+                  className="existing-account-link"
+                  onClick={existingAccountHandler}
+                  style={{
+                    color: "#0E4C92",
+                    cursor: "pointer",
+                    textAlign: "start",
+                  }}
+                >
                   New User? Create an account
                 </p>
-                          )}                   
+              )}
             </Card.Footer>
           </Card>
         </Container>
@@ -164,5 +230,3 @@ import { useNavigate } from "react-router-dom";
     </div>
   );
 };
-
-// export default LogIn;
