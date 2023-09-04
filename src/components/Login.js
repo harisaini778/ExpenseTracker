@@ -4,6 +4,7 @@ import { Form } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import { Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { Nav, Navbar } from "react-bootstrap";
 
 export const LogIn = () => {
   const [isLogIn, setIsLogin] = useState(false);
@@ -89,19 +90,37 @@ export const LogIn = () => {
       className="login-container"
       style={{
         backgroundColor: "#F2F2F2",
-        height: "100vh",
+        minHeight: "100vh",
         display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundImage: `url('https://source.unsplash.com/800x600/?nature')`, // Replace with your image URL
+        flexDirection: "column",
+        backgroundImage: `url('https://source.unsplash.com/800x600/?finance')`, // Replace with your image URL
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
-      <Container className="main-body-login" style={{ maxWidth: "400px" }}>
+      <Navbar expand="lg" bg="primary" variant="dark" fixed="top" style={{fontWeight:"bolder"}}>
+        <Container fluid>
+          <Navbar.Brand className="text-white">Expense Tracker</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="ms-auto">
+              <div className="text-white">
+                Winner never quits, quitter never wins!
+              </div>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+      <Container
+        className="main-body-login"
+        style={{
+          maxWidth: "400px",
+          margin: "80px auto 0",
+        }}
+      >
         <Container>
-          <Card className="card-body-login">
+          <Card className="card-body-login mt-5" >
             <Card.Header
               className="card-border-login"
               style={{ backgroundColor: "#0E4C92", color: "white", textAlign: "center" }}
