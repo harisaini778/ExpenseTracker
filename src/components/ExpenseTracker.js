@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -9,28 +9,71 @@ export const ExpenseTracker = () => {
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [expenses, setExpenses] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleAddExpense = () => {
+  useEffect(() => {
+    // Fetch expenses from Firebase when the component mounts
+    fetchExpenses();
+  }, []);
+
+  const fetchExpenses = async () => {
+    try {
+      const response = await fetch('https://expensetracker-4ddaf-default-rtdb.firebaseio.com/expenses.json');
+
+      if (response.ok) {
+        const data = await response.json();
+        const expensesArray = [];
+
+        for (const key in data) {
+          expensesArray.push({ id: key, ...data[key] });
+        }
+
+        setExpenses(expensesArray);
+      }
+    } catch (error) {
+      console.error("Error fetching expenses:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddExpense = async () => {
     if (!moneySpent || !description || !category) {
       // Ensure all fields are filled out
       alert("Please fill out all fields.");
       return;
     }
 
-    // Create a new expense object
     const newExpense = {
       moneySpent,
       description,
       category,
     };
 
-    // Add the new expense to the expenses array
-    setExpenses([...expenses, newExpense]);
+    try {
+      // Post new expense to Firebase
+      const response = await fetch('https://expensetracker-4ddaf-default-rtdb.firebaseio.com/expenses.json', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newExpense),
+      });
 
-    // Clear the input fields
-    setMoneySpent("");
-    setDescription("");
-    setCategory("");
+      if (response.ok) {
+        // Clear the input fields
+        setMoneySpent("");
+        setDescription("");
+        setCategory("");
+
+        // Fetch updated expenses from Firebase
+        fetchExpenses();
+      } else {
+        console.error("Error adding expense.");
+      }
+    } catch (error) {
+      console.error("Error adding expense:", error);
+    }
   };
 
   return (
@@ -91,13 +134,17 @@ export const ExpenseTracker = () => {
 
       <div className="container mt-4">
         <h2>Expenses List</h2>
-        <ul>
-          {expenses.map((expense, index) => (
-            <li key={index}>
-              Money Spent: {expense.moneySpent}, Description: {expense.description}, Category: {expense.category}
-            </li>
-          ))}
-        </ul>
+        {loading ? (
+          <p>Loading expenses...</p>
+        ) : (
+          <ul>
+            {expenses.map((expense) => (
+              <li key={expense.id}>
+                Money Spent: {expense.moneySpent}, Description: {expense.description}, Category: {expense.category}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );
