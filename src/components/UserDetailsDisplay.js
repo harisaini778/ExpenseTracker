@@ -1,21 +1,28 @@
 import React, { useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
-import { Stack } from "react-bootstrap";
-import { Badge } from "react-bootstrap";
-import { Nav, Button,Alert } from "react-bootstrap";
-import { Navigate, useNavigate } from "react-router-dom";
+import Badge from "react-bootstrap/Badge";
+import Nav from "react-bootstrap/Nav";
+import Button from "react-bootstrap/Button";
+import Alert from "react-bootstrap/Alert";
+import Card from "react-bootstrap/Card";
+import { useNavigate } from "react-router-dom";
 import { ExpenseTracker } from "./ExpenseTracker";
+import piggybank_img from "../components/assets/piggybank2.jpg";
+
+// Define a professional background image URL
+const backgroundImageUrl = `url(${piggybank_img})`;
 
 export const UserDetailsDisplay = () => {
   const [userData, setUserData] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
-    const [isClicked, setIsClicked] = useState(false);
-    const [showAlert, setShowAlert] = useState(false);
-    const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isClicked, setIsClicked] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const idToken = localStorage.getItem("token"); // Replace with the actual user's ID token
+    const idToken = localStorage.getItem("token");
+
     if (!idToken) {
       console.error("User is not authenticated");
       setIsLoading(false);
@@ -67,67 +74,104 @@ export const UserDetailsDisplay = () => {
         return response.json();
       })
       .then(() => {
-          console.log("Verification email sent successfully");
-          setIsClicked(true);
-          setShowAlert(true);
-        // Optionally, you can show a success message to the user
+        console.log("Verification email sent successfully");
+        setIsClicked(true);
+        setShowAlert(true);
       })
       .catch((error) => {
         console.error("Error sending verification email:", error);
-        // Optionally, you can show an error message to the user
       });
   };
 
-    const logOutHandeler = () => {
-        localStorage.removeItem("token");
-        navigate("/LogIn");
-        
-    }
+  const logOutHandler = () => {
+    localStorage.removeItem("token");
+    navigate("/LogIn");
+  };
 
   return (
-    <div>
-      <Navbar expand="lg" className="bg-body-tertiary">
+    <div
+      style={{
+        background: backgroundImageUrl,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        minHeight: "100vh",
+      }}
+    >
+      <Navbar expand="lg" className="bg-primary" variant="dark" style={{fontWeight:"bolder"}} >
         <Container>
-          <Navbar.Brand>
-            Happiness is the key to success.
-          </Navbar.Brand>
+          <Navbar.Brand>Expense Tracker</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              <Stack direction="horizontal">
-                <div>
-                  <Badge>Your profile is now 100% complete.</Badge>
-                </div>
-                              <Nav.Link><Button onClick={logOutHandeler}>
-                                  LogOut
-                              </Button></Nav.Link>
-              </Stack>
+              <Badge
+                pill
+                bg="info"
+                className="d-flex align-items-center"
+                style={{
+                  color: "white",
+                  fontSize: "1rem",
+                  padding: "0.5rem 1rem",
+                  borderRadius: "1rem",
+                }}
+              >
+                Your profile is now 100% complete.
+              </Badge>
+              <Nav.Link>
+                <Button
+                  variant="outline-light"
+                  onClick={logOutHandler}
+                >
+                  Log Out
+                </Button>
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
-          <Container>
-              {isClicked && showAlert && <Alert variant="success" onClose={()=>setShowAlert(false)} dismissible>
-                  Verification link has been sent to your registered email successfully, check your email.
-              </Alert>}
+      <Container className="py-4">
+        {isClicked && showAlert && (
+          <Alert variant="success" onClose={() => setShowAlert(false)} dismissible>
+            Verification link has been sent to your registered email successfully. Check your email.
+          </Alert>
+        )}
         {isLoading ? (
           <p>Loading...</p>
         ) : (
           <div>
-            <h2>User Details</h2>
-            <p>Full Name: {userData.displayName}</p>
-            <p>Email: {userData.email}</p>
-            <p>Profile Photo URL: {userData.photoUrl}</p>
+            <Card>
+              <Card.Header className="bg-primary text-white">
+                <h2>User Details</h2>
+              </Card.Header>
+              <Card.Body>
+                <div className="user-details">
+                  <p>
+                    <strong>Full Name:</strong> {userData.displayName}
+                  </p>
+                  <p>
+                    <strong>Email:</strong> {userData.email}
+                  </p>
+                  <p>
+                    <strong>Profile Photo URL:</strong> {userData.photoUrl}
+                  </p>
+                </div>
+              </Card.Body>
+            </Card>
           </div>
         )}
-              {!isClicked &&<div>
-                  Let's verify your email id
-                  <Button onClick={verifyEmail}>Verify</Button>
-              </div>}
-          </Container>
-          <Container>
-              {!isLoading && <ExpenseTracker/> }
-          </Container>
+        {!isClicked && (
+          <div className="py-4"> {/* Add padding to the text and button */}
+            <p>
+              Let's verify your email id
+            </p>
+            <Button onClick={verifyEmail} className="px-4 py-2"> {/* Add padding to the button */}
+              Verify
+            </Button>
+          </div>
+        )}
+      </Container>
+      <Container>
+        {!isLoading && <ExpenseTracker />}
+      </Container>
     </div>
   );
 };

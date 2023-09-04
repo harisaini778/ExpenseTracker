@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import { Stack } from "react-bootstrap";
+// import Nav from 'react-bootstrap/Nav';
+// import Navbar from 'react-bootstrap/Navbar';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import ListGroup from 'react-bootstrap/ListGroup';
+// import { Stack } from "react-bootstrap"
 
 export const ExpenseTracker = () => {
   const [moneySpent, setMoneySpent] = useState("");
@@ -160,9 +164,14 @@ export const ExpenseTracker = () => {
     }
   };
 
+  // Apply inline CSS to prevent horizontal scrolling
+  const bodyStyle = {
+    overflowX: 'hidden',
+  };
+
   return (
-    <div>
-      <Navbar expand="lg" className="bg-body-tertiary">
+    <div style={bodyStyle}>
+      {/* <Navbar expand="lg" bg="primary" variant="dark">
         <Container>
           <Navbar.Brand>Expense Tracker</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -174,80 +183,92 @@ export const ExpenseTracker = () => {
             </Nav>
           </Navbar.Collapse>
         </Container>
-      </Navbar>
+      </Navbar> */}
 
-      <div className="container mt-4">
-        <h2>Add Daily Expense</h2>
-        <div className="mb-3">
-          <label htmlFor="moneySpent" className="form-label">Money Spent</label>
-          <input
-            type="text"
-            className="form-control"
-            id="moneySpent"
-            value={moneySpent}
-            onChange={(e) => setMoneySpent(e.target.value)}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="description" className="form-label">Description</label>
-          <input
-            type="text"
-            className="form-control"
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="category" className="form-label">Category</label>
-          <select
-            className="form-select"
-            id="category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          >
-            <option value="">Select a category</option>
-            <option value="Food">Food</option>
-            <option value="Petrol">Petrol</option>
-            <option value="Salary">Salary</option>
-            {/* Add more categories as needed */}
-          </select>
-        </div>
-        {editExpenseId ? (
-          <>
-            <button onClick={handleSaveEdit} className="btn btn-primary">Save Edit</button>
-            <button onClick={handleCancelEdit} className="btn btn-danger ml-2">Cancel Edit</button>
-          </>
-        ) : (
-          <button onClick={handleAddExpense} className="btn btn-primary">Add Expense</button>
-        )}
-      </div>
+      <Container className="mt-4">
+        <Card>
+          <Card.Header className="bg-primary text-white">
+            <h2>Add Daily Expense</h2>
+          </Card.Header>
+          <Card.Body>
+            <Form>
+              <Form.Group controlId="moneySpent">
+                <Form.Label>Money Spent</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={moneySpent}
+                  onChange={(e) => setMoneySpent(e.target.value)}
+                />
+              </Form.Group>
+              <Form.Group controlId="description">
+                <Form.Label>Description</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+              </Form.Group>
+              <Form.Group controlId="category">
+                <Form.Label>Category</Form.Label>
+                <Form.Select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                >
+                  <option value="">Select a category</option>
+                  <option value="Food">Food</option>
+                  <option value="Petrol">Petrol</option>
+                  <option value="Salary">Salary</option>
+                  {/* Add more categories as needed */}
+                </Form.Select>
+              </Form.Group>
+              {editExpenseId ? (
+                <>
+                  <Button variant="primary" onClick={handleSaveEdit}>Save Edit</Button>
+                  <Button variant="danger" onClick={handleCancelEdit} className="ms-2">Cancel Edit</Button>
+                </>
+              ) : (
+                <Button variant="primary" onClick={handleAddExpense}>Add Expense</Button>
+              )}
+            </Form>
+          </Card.Body>
+        </Card>
+      </Container>
 
-      <div className="container mt-4">
-        <h2>Expenses List</h2>
-        {loading ? (
-          <p>Loading expenses...</p>
-        ) : (
-          <ul>
-            {expenses.map((expense) => (
-              <li key={expense.id}>
-                Money Spent: {expense.moneySpent}, Description: {expense.description}, Category: {expense.category}
-                {editExpenseId === expense.id ? (
-                  <>
-                    <button onClick={handleSaveEdit}>Save</button>
-                    <button onClick={handleCancelEdit}>Cancel</button>
-                  </>
-                ) : (
-                  <>
-                    <button onClick={() => handleEditClick(expense.id)}>Edit</button>
-                    <button onClick={() => handleDeleteExpense(expense.id)}>Delete</button>
-                  </>
-                )}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+      <Container className="mt-4">
+        <Card>
+          <Card.Header className="bg-primary text-white">
+            <h2>Expenses List</h2>
+          </Card.Header>
+          <Card.Body>
+            {loading ? (
+              <p>Loading expenses...</p>
+            ) : (
+              <div className="table-responsive">
+                <ListGroup>
+                  {expenses.map((expense) => (
+                    <ListGroup.Item key={expense.id} className="d-flex justify-content-between">
+                      <div>
+                        Money Spent: {expense.moneySpent}, Description: {expense.description}, Category: {expense.category}
+                      </div>
+                      {editExpenseId === expense.id ? (
+                        <>
+                          <Button variant="primary" onClick={handleSaveEdit} className="me-2">Save</Button>
+                          <Button variant="danger" onClick={handleCancelEdit}>Cancel</Button>
+                        </>
+                      ) : (
+                        <>
+                          <Button variant="primary" onClick={() => handleEditClick(expense.id)} className="me-2">Edit</Button>
+                          <Button variant="danger" onClick={() => handleDeleteExpense(expense.id)}>Delete</Button>
+                        </>
+                      )}
+                    </ListGroup.Item>
+                  ))}
+                </ListGroup>
+              </div>
+            )}
+          </Card.Body>
+        </Card>
+      </Container>
     </div>
   );
 };
