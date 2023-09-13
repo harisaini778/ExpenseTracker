@@ -5,10 +5,12 @@ import { LogIn } from "./components/Login";
 import { Profile} from "./components/Profile";
 import { UserDetailsDisplay } from "./components/UserDetailsDisplay";
 import { ForgetPassword } from "./components/ForgetPassword";
+import "./App.css";
 
 const App = () => {
   return (
-    <Router>
+    <div className="App">
+  <Router>
       <Routes>
         <Route path="/" element={<Navigate to="/LogIn" />} />
         <Route path="/Home" element={<Home />} />
@@ -18,6 +20,8 @@ const App = () => {
          <Route path="/ForgetPassword" element={<ForgetPassword />} />
       </Routes>
     </Router>
+    </div>
+  
   );
 };
 

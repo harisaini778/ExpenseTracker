@@ -88,25 +88,25 @@ export const LogIn = () => {
   return (
     <div
       className="login-container"
-      style={{
-        backgroundColor: "#F2F2F2",
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        backgroundImage: `url('https://source.unsplash.com/800x600/?finance')`, // Replace with your image URL
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
+    style={{
+   backgroundImage: "linear-gradient(to top, #30cfd0 0%, #330867 100%)",
+  minHeight: "100vh",
+  display: "flex",
+  flexDirection: "column",
+}}
+
     >
-      <Navbar expand="lg" bg="primary" variant="dark" fixed="top" style={{fontWeight:"bolder"}}>
+      <Navbar expand="lg" fixed="top" style={{
+        backgroundImage: "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
+       fontWeight: "bolder",
+      }}>
         <Container fluid>
-          <Navbar.Brand className="text-white">Expense Tracker</Navbar.Brand>
+          <Navbar.Brand style={{ color: "white" }}><h2>Expense Tracker</h2></Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              <div className="text-white">
-                Winner never quits, quitter never wins!
+              <div style={{ color: "white" }}>
+                <h4>Winner never quits, quitter never wins!</h4>
               </div>
             </Nav>
           </Navbar.Collapse>
@@ -123,16 +123,18 @@ export const LogIn = () => {
           <Card className="card-body-login mt-5" >
             <Card.Header
               className="card-border-login"
-              style={{ backgroundColor: "#0E4C92", color: "white", textAlign: "center" }}
+              style={{ backgroundImage: "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)", color: "white", textAlign: "center" }}
             >
               <h2>Welcome to Your Expense Tracker</h2>
             </Card.Header>
-            <Card.Body className="card-border-login" style={{ backgroundColor: "#F9F9F9" }}>
+            <Card.Body className="card-border-login" style={{ backgroundColor: "#F9F9F9",paddingBottom:"0px" }}>
               <Form onSubmit={submitFormHandler}>
                 <Form.Group as={Row} className="mb-3">
                   <Form.Label
                     className="mb-2"
-                    style={{ textAlign: "start", color: "#0E4C92" }}
+                    style={{
+                      textAlign: "start", color: "#0E4C92",
+                 }}
                   >
                     <h5>Your Email</h5>
                   </Form.Label>
@@ -161,7 +163,7 @@ export const LogIn = () => {
                   {isLogIn || isExisting ? (
                     <div className="d-grid login-btn">
                       <Button
-                        variant="outline-dark"
+                        variant="outline-primary"
                         className="m-2 btn-sm"
                         type="submit"
                       >
@@ -171,9 +173,10 @@ export const LogIn = () => {
                   ) : (
                     <div className="d-grid login-btn">
                       <Button
-                        variant="outline-dark"
+                        variant="outline-primary"
                         className="m-2 btn-sm"
-                        type="submit"
+                          type="submit"
+                          style={{marginBottom: "10px"}}
                       >
                         Create an Account
                       </Button>
@@ -202,9 +205,12 @@ export const LogIn = () => {
                     <a
                       onClick={forgetPasswordHandler}
                       style={{
-                        color: "#0E4C92",
+                        color: "blue",
                         cursor: "pointer",
-                        textAlign: "start",
+                        textAlign: "center",
+                        marginTop: "0px",
+                        marginBottom: "0px",
+                        paddingTop:"0px"
                       }}
                     >
                       Forget Password ?
@@ -214,29 +220,28 @@ export const LogIn = () => {
               </Form>
             </Card.Body>
             <Card.Footer
-              className="card-border-login"
-              style={{ backgroundColor: "#F9F9F9" }}
+              style={{
+                backgroundColor: "#F9F9F9",
+              }}
             >
               {!isExisting ? (
                 <p
-                  className="existing-account-link"
                   onClick={existingAccountHandler}
                   style={{
-                    color: "#0E4C92",
+                    color: "blue",
                     cursor: "pointer",
-                    textAlign: "start",
+                    textAlign: "center",
                   }}
                 >
                   Log in with an existing account
                 </p>
               ) : (
                 <p
-                  className="existing-account-link"
                   onClick={existingAccountHandler}
                   style={{
-                    color: "#0E4C92",
+                    color: "blue",
                     cursor: "pointer",
-                    textAlign: "start",
+                    textAlign: "center",
                   }}
                 >
                   New User? Create an account

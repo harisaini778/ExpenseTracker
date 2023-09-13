@@ -12,9 +12,9 @@ export const Home = () => {
 
   return (
     <div>
-      <Navbar expand="lg" bg="primary" variant="dark">
+      <Navbar expand="lg" className="bg-dark" variant="light">
         <Container>
-          <Navbar.Brand className="text-white">Expense Tracker</Navbar.Brand>
+          <Navbar.Brand className="text-white"><h1>Expense Tracker</h1></Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
