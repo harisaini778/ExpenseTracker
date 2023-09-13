@@ -90,35 +90,31 @@ export const UserDetailsDisplay = () => {
 
   return (
     <div
-      style={{
-        background: backgroundImageUrl,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        minHeight: "100vh",
-      }}
+             style={{
+   backgroundImage: "linear-gradient(to top, #30cfd0 0%, #330867 100%)",
+  minHeight: "100vh",
+}}
     >
-      <Navbar expand="lg" className="bg-primary" variant="dark" style={{fontWeight:"bolder"}} >
+      <Navbar expand="lg"
+        style={{
+        backgroundImage: "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
+       fontWeight: "bolder",
+      }}
+ >
         <Container>
-          <Navbar.Brand>Expense Tracker</Navbar.Brand>
+          <Navbar.Brand style={{color:"white"}}><h2>Expense Tracker</h2></Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
               <Badge
-                pill
-                bg="info"
-                className="d-flex align-items-center"
-                style={{
-                  color: "white",
-                  fontSize: "1rem",
-                  padding: "0.5rem 1rem",
-                  borderRadius: "1rem",
-                }}
+                className="d-flex align-items-center bg-info"
+                style={{borderRadius:"10px"}}
               >
-                Your profile is now 100% complete.
+                <h6>Your profile is now 100% complete.</h6>
               </Badge>
               <Nav.Link>
                 <Button
-                  variant="outline-light"
+                  className="btn-warning"
                   onClick={logOutHandler}
                 >
                   Log Out
@@ -135,23 +131,26 @@ export const UserDetailsDisplay = () => {
           </Alert>
         )}
         {isLoading ? (
-          <p>Loading...</p>
+          <h2 style={{color:"white"}}>Loading...</h2>
         ) : (
           <div>
-            <Card>
-              <Card.Header className="bg-primary text-white">
+              <Card style={{
+                marginTop: "80px"}}>
+                <Card.Header 
+                style={{ backgroundImage: "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",color:"white"}}>
                 <h2>User Details</h2>
               </Card.Header>
               <Card.Body>
-                <div className="user-details">
+                  <div className="user-details"
+                  >
                   <p>
-                    <strong>Full Name:</strong> {userData.displayName}
+                    <strong>Full Name :</strong> {userData.displayName}
                   </p>
                   <p>
-                    <strong>Email:</strong> {userData.email}
+                    <strong>Email :</strong> {userData.email}
                   </p>
                   <p>
-                    <strong>Profile Photo URL:</strong> {userData.photoUrl}
+                    <strong>Profile Photo URL :</strong> {userData.photoUrl}
                   </p>
                 </div>
               </Card.Body>
@@ -159,10 +158,14 @@ export const UserDetailsDisplay = () => {
           </div>
         )}
         {!isClicked && (
-          <div className="py-4"> {/* Add padding to the text and button */}
-            <p>
+          <div className="py-4"
+            style={{
+              border: "2px solid white",
+              borderRadius: "10px",
+            margin:"20px"}}> {/* Add padding to the text and button */}
+            <h3 style={{color:"white",padding:"20px"}}>
               Let's verify your email id
-            </p>
+            </h3>
             <Button onClick={verifyEmail} className="px-4 py-2"> {/* Add padding to the button */}
               Verify
             </Button>

@@ -187,7 +187,13 @@ export const ExpenseTracker = () => {
 
       <Container className="mt-4">
         <Card>
-          <Card.Header className="bg-primary text-white">
+          <Card.Header 
+                style={{
+        backgroundImage: "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
+              fontWeight: "bolder",
+       color:"white"
+      }}
+          >
             <h2>Add Daily Expense</h2>
           </Card.Header>
           <Card.Body>
@@ -236,7 +242,12 @@ export const ExpenseTracker = () => {
 
       <Container className="mt-4">
         <Card>
-          <Card.Header className="bg-primary text-white">
+          <Card.Header
+                   style={{
+        backgroundImage: "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
+              fontWeight: "bolder",
+       color:"white"
+      }}>
             <h2>Expenses List</h2>
           </Card.Header>
           <Card.Body>
