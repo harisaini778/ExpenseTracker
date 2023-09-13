@@ -133,12 +133,13 @@ export const LogIn = () => {
                   <Form.Label
                     className="mb-2"
                     style={{
-                      textAlign: "start", color: "#0E4C92",
+                      textAlign: "center", color: "#0E4C92",
                  }}
                   >
                     <h5>Your Email</h5>
                   </Form.Label>
                   <Form.Control
+                    style={{ textAlign: "center", color: "#0E4C92" }}
                     type="email"
                     className="mb-2 form-control"
                     onFocus={handleFocus}
@@ -148,11 +149,12 @@ export const LogIn = () => {
                   />
                   <Form.Label
                     className="mb-2"
-                    style={{ textAlign: "start", color: "#0E4C92" }}
+                    style={{ textAlign: "center", color: "#0E4C92" }}
                   >
                     <h5>Your Password</h5>
                   </Form.Label>
                   <Form.Control
+                    style={{ textAlign: "center", color: "#0E4C92" }}
                     type="password"
                     className="mb-2 form-control"
                     onFocus={handleFocus}
@@ -176,7 +178,6 @@ export const LogIn = () => {
                         variant="outline-primary"
                         className="m-2 btn-sm"
                           type="submit"
-                          style={{marginBottom: "10px"}}
                       >
                         Create an Account
                       </Button>

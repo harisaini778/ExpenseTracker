@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { Stack, Alert } from "react-bootstrap";
+import { Stack, Alert, Button } from "react-bootstrap";
 
 export const ForgetPassword = () => {
   const [email, setEmail] = useState("");
@@ -71,16 +71,24 @@ export const ForgetPassword = () => {
   };
 
   return (
-    <div>
-      <Navbar expand="lg" className="bg-body-tertiary">
+    <div  style={{
+   backgroundImage: "linear-gradient(to top, #30cfd0 0%, #330867 100%)",
+    minHeight: "100vh",
+    overflow : "auto",
+}}>
+      <Navbar expand="lg" fixed="top"
+      style={{
+        backgroundImage: "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
+       fontWeight: "bolder",
+      }}>
         <Container>
-          <Navbar.Brand>Welocome To The Expense Tracker!!!</Navbar.Brand>
+          <Navbar.Brand style={{ color: "white" }}><h4>Welocome To The Expense Tracker!!!</h4></Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
               <Stack direction="horizontal">
-                <div>Click here to go to Login page.</div>
-                <Nav.Link href="LogIn" style={{ color: "blue" }}>Login</Nav.Link>
+                <div  style={{ color: "white" }}> <h5>Click here to go to Login page.</h5></div>
+                <Nav.Link href="LogIn" style={{ color: "yellow" }}><h5>Login</h5></Nav.Link>
               </Stack>
             </Nav>
           </Navbar.Collapse>
@@ -89,8 +97,9 @@ export const ForgetPassword = () => {
       {showAlert && <Alert variant="success" onClose={() => setShowAlert(false)} dismissible>
         Your password has been reset successfully, Now you can log in with your updated password.
       </Alert>}
-      <Container style={containerStyle}>
-        <div>
+      <Container
+      style={{marginTop:"150px",width:"50vw",border:"2px solid white",borderRadius:"10px"}}>
+        <div style={{padding:"25px"}}>
           <input
             type="email"
             placeholder="Enter your email"
@@ -112,7 +121,11 @@ export const ForgetPassword = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
             style={inputStyle}
           />
-          <button onClick={handlePasswordReset} style={buttonStyle}>Reset Password</button>
+  <div className="d-grid gap-4" style={{marginTop:"5px"}}>
+      <Button variant="outline-light" size="md" onClick={handlePasswordReset}>
+        Reset Password
+      </Button>
+    </div>
         </div>
         <div>{resetStatus}</div>
       </Container>

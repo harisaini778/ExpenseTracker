@@ -12,7 +12,11 @@ export const Home = () => {
 
   return (
     <div>
-      <Navbar expand="lg" className="bg-dark" variant="light">
+      <Navbar expand="lg"
+       style={{
+        backgroundImage: "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
+       fontWeight: "bolder",
+      }}>
         <Container>
           <Navbar.Brand className="text-white"><h1>Expense Tracker</h1></Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
