@@ -127,7 +127,7 @@ export const ForgetPassword = () => {
       </Button>
     </div>
         </div>
-        <div>{resetStatus}</div>
+        <div style={{color:"white",padding:"10px"}}><h3>{resetStatus}</h3></div>
       </Container>
     </div>
   );

@@ -25,7 +25,7 @@ export const Profile = () => {
       setShowAlert(true);
 
       // Navigate to UserDetailsProfiles upon successful update
-      navigate("/UserDetailsDisplay"); // Updated route
+      navigate("/EmailVerify"); // Updated route
     } catch (error) {
       console.error("Error updating user profile:", error);
     }
@@ -70,7 +70,7 @@ export const Profile = () => {
         </Container>
       </Navbar>
       <Container
-      style={{marginTop:"100px",width:"50vw"}}>
+      style={{marginTop:"100px",width:"80vw"}}>
         {/* Success Alert */}
         {showAlert && (
           <Alert variant="success" onClose={() => setShowAlert(false)} dismissible
