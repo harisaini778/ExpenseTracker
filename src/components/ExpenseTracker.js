@@ -286,16 +286,19 @@ export const ExpenseTracker = () => {
   const [monthlySalary, setMonthlySalary] = useState(0);
   const [balance, setBalance] = useState(0);
   const [isPremium, setIsPremium] = useState(false);
+  const [userPhotoUrl, setUserPhotoUrl] = useState(""); // User's photo URL
 
   useEffect(() => {
     fetchExpenses();
-    // Fetch monthly salary and premium status here (from local storage or API)
+    // Fetch monthly salary, premium status, and user photo URL here (from local storage or API)
     const storedMonthlySalary =
       parseFloat(localStorage.getItem("monthlySalary")) || 0;
     const storedIsPremium =
       localStorage.getItem("isPremium") === "true" || false;
+    const storedUserPhotoUrl = localStorage.getItem("userPhotoUrl") || "";
     setMonthlySalary(storedMonthlySalary);
     setIsPremium(storedIsPremium);
+    setUserPhotoUrl(storedUserPhotoUrl);
   }, []);
 
   useEffect(() => {
@@ -309,7 +312,7 @@ export const ExpenseTracker = () => {
     const balanceWithSalary = monthlySalary - totalExpenses;
 
     // Check if the user needs to be upgraded to premium
-    if (balanceWithSalary < 0 && !isPremium) {
+    if (balanceWithSalary < 0 && !isPremium && Math.abs(balanceWithSalary) > 10000) {
       alert(
         "Your expenses have exceeded Rs. 10,000. Please upgrade to premium."
       );
@@ -474,8 +477,24 @@ export const ExpenseTracker = () => {
     <div style={{ overflowX: "hidden" }}>
       <Container className="mt-4">
         <Card>
-          <Card.Header className="bg-primary text-white">
-            <h2>Add Daily Expense</h2>
+          <Card.Header className="text-white text-center"
+          style={{
+        backgroundImage: "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
+       fontWeight: "bolder",
+      }}>
+            <div className="d-flex align-items-center justify-content-center">
+              {userPhotoUrl && (
+                <img
+                  src={userPhotoUrl}
+                  alt="User"
+                  className="user-photo"
+                  style={{ marginRight: "10px", borderRadius: "50%" }}
+                />
+              )}
+              <h2 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>
+                Add Daily Expense
+              </h2>
+            </div>
           </Card.Header>
           <Card.Body>
             <Form>
@@ -522,7 +541,7 @@ export const ExpenseTracker = () => {
                   placeholder="Enter monthly salary"
                 />
               </Form.Group>
-              <Button variant="primary" onClick={handleAddExpense}>
+              <Button variant="primary" onClick={handleAddExpense} className="m-4">
                 Add Expense
               </Button>
             </Form>
@@ -532,8 +551,24 @@ export const ExpenseTracker = () => {
 
       <Container className="mt-4">
         <Card>
-          <Card.Header className="bg-primary text-white">
-            <h2>Expenses List</h2>
+          <Card.Header className="text-white text-center"
+          style={{
+        backgroundImage: "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
+       fontWeight: "bolder",
+      }}>
+            <div className="d-flex align-items-center justify-content-center">
+              {userPhotoUrl && (
+                <img
+                  src={userPhotoUrl}
+                  alt="User"
+                  className="user-photo"
+                  style={{ marginRight: "10px", borderRadius: "50%" }}
+                />
+              )}
+              <h2 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>
+                Expenses List
+              </h2>
+            </div>
           </Card.Header>
           <Card.Body>
             {loading ? (
@@ -547,16 +582,19 @@ export const ExpenseTracker = () => {
                       className="d-flex justify-content-between align-items-center expense-item"
                     >
                       <div className="expense-details">
-                        <div className="expense-info">
-                          <span className="expense-label">Money Spent:</span>{" "}
-                          {expense.moneySpent}
+                        <div className="expense-info" style={{textAlign:"start"}}>
+                          <span className="expense-label"
+                          style={{textAlign:"start",fontWeight:"bold"}}>Money Spent : </span>{" "}
+                          <span style={{fontWeight : "bolder",color:"grey"}}>Rs </span>{expense.moneySpent}
                         </div>
-                        <div className="expense-info">
-                          <span className="expense-label">Description:</span>{" "}
+                        <div className="expense-info" style={{textAlign:"start"}}>
+                          <span className="expense-label"
+                          style={{textAlign:"start",fontWeight:"bold"}}>Description :</span>{" "}
                           {expense.description}
                         </div>
-                        <div className="expense-info">
-                          <span className="expense-label">Category:</span>{" "}
+                        <div className="expense-info" style={{textAlign:"start"}}>
+                          <span className="expense-label"
+                          style={{textAlign:"start",fontWeight:"bold"}}>Category :</span>{" "}
                           {expense.category}
                         </div>
                       </div>
@@ -601,11 +639,28 @@ export const ExpenseTracker = () => {
 
       <Container className="mt-4">
         <Card>
-          <Card.Header className="bg-primary text-white">
-            <h2>Balance</h2>
+          <Card.Header className="text-white text-center"
+          style={{
+        backgroundImage: "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
+       fontWeight: "bolder",
+      }}>
+            <div className="d-flex align-items-center justify-content-center">
+              {userPhotoUrl && (
+                <img
+                  src={userPhotoUrl}
+                  alt="User"
+                  className="user-photo"
+                  style={{ marginRight: "10px", borderRadius: "50%" }}
+                />
+              )}
+              <h2 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>
+                Balance
+              </h2>
+            </div>
           </Card.Header>
           <Card.Body>
-            <p>Your monthly balance: Rs. {balance}</p>
+            <h5
+            style={{color:"black",fontWeight:"bolder"}}>Your monthly balance :<span style={{color:"grey"}}> Rs. {balance}</span></h5>
             {balance < 0 && !isPremium && (
               <Button
                 variant="warning"

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 
 export const Profile = () => {
-  const [fullName, setFullName] = useState("");
+const [fullName, setFullName] = useState("");
   const [profilePhotoUrl, setProfilePhotoUrl] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const navigate = useNavigate();
@@ -21,11 +21,15 @@ export const Profile = () => {
     try {
       // Your code for updating user profile...
 
+      // Save user data to localStorage
+      localStorage.setItem("userFullName", fullName);
+      localStorage.setItem("userProfilePhotoUrl", profilePhotoUrl);
+
       // Show the success alert
       setShowAlert(true);
 
       // Navigate to UserDetailsProfiles upon successful update
-      navigate("/EmailVerify"); // Updated route
+      navigate("/UserDetailsDisplay"); // Updated route
     } catch (error) {
       console.error("Error updating user profile:", error);
     }
@@ -37,6 +41,7 @@ export const Profile = () => {
     // Call the updateUserProfile function to update user details
     updateUserProfile();
   };
+
 
   return (
     <div className="profile-container"

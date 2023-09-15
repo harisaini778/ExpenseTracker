@@ -50,6 +50,7 @@ export const LogIn = () => {
           enteredEmail.current.value = "";
           enteredPassword.current.value = "";
           localStorage.setItem("token", data.idToken);
+          localStorage.setItem("email", email);
           navigate("/Home");
           if (isLogIn) {
             alert("Log in successful");

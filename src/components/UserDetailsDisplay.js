@@ -2,48 +2,35 @@ import React, { useState, useEffect } from "react";
 import { Container, Navbar, Nav, Button, Badge, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { ExpenseTracker } from "./ExpenseTracker";
+import { ListGroup } from "react-bootstrap";
 
 export const UserDetailsDisplay = () => {
-  const [userData, setUserData] = useState({});
+ const [userData, setUserData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const idToken = localStorage.getItem("token");
+    // Retrieve user data from localStorage
+    const fullName = localStorage.getItem("userFullName");
+    const profilePhotoUrl = localStorage.getItem("userProfilePhotoUrl");
+    const email = localStorage.getItem("email");
 
-    if (!idToken) {
-      console.error("User is not authenticated");
-      setIsLoading(false);
-      return;
-    }
+    // Create a user object
+    const user = {
+      displayName: fullName,
+      photoUrl: profilePhotoUrl,
+      email:email,
+    };
 
-    fetch("https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDoq-H5WEJsZH-kVxJfOdBkOJ5i9U-8150", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        idToken: idToken,
-      }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setUserData(data.users[0]);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching user details:", error);
-        setIsLoading(false);
-      });
+    // Set user data and setLoading
+    setUserData(user);
+    setIsLoading(false);
   }, []);
-
   const logOutHandler = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userFullName");
+    localStorage.removeItem("userProfilePhotoUrl");
+    localStorage.removeItem("email");
     navigate("/LogIn");
   };
 
@@ -84,36 +71,54 @@ export const UserDetailsDisplay = () => {
         </Container>
       </Navbar>
       <Container className="py-4">
-        {isLoading ? (
-          <h2 style={{ color: "white" }}>Loading...</h2>
+  {isLoading ? (
+    <h2 style={{ color: "white" }}>Loading...</h2>
+  ) : (
+    <div>
+      <Card style={{ marginTop: "80px" }}>
+        <Card.Header
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
+            color: "white",
+          }}
+        >
+          <h2>User Details</h2>
+        </Card.Header>
+<Card.Body>
+  <div className="user-details">
+    <ListGroup>
+      <ListGroup.Item className="d-flex align-items-center">
+        <strong className="me-2">Full Name :</strong>{" "}
+        {userData.displayName || "N/A"}
+      </ListGroup.Item>
+      <ListGroup.Item className="d-flex align-items-center">
+        <strong className="me-2">Email :</strong> {userData.email || "N/A"}
+      </ListGroup.Item>
+      <ListGroup.Item className="d-flex align-items-center justify-content-between">
+        <strong className="me-2">Profile Photo:</strong>{" "}
+        {userData.photoUrl ? (
+          <img
+            src={userData.photoUrl}
+            alt="Profile"
+            style={{
+              maxWidth: "100px",
+              borderRadius: "50%", // Adds rounded corners for a circular effect
+              boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.5)", // Adds a shadow
+            }}
+          />
         ) : (
-          <div>
-            <Card style={{ marginTop: "80px" }}>
-              <Card.Header
-                style={{
-                  backgroundImage: "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
-                  color: "white",
-                }}
-              >
-                <h2>User Details</h2>
-              </Card.Header>
-              <Card.Body>
-                <div className="user-details">
-                  <p>
-                    <strong>Full Name :</strong> {userData.displayName}
-                  </p>
-                  <p>
-                    <strong>Email :</strong> {userData.email}
-                  </p>
-                  <p>
-                    <strong>Profile Photo URL :</strong> {userData.photoUrl}
-                  </p>
-                </div>
-              </Card.Body>
-            </Card>
-          </div>
+          "N/A"
         )}
-      </Container>
+      </ListGroup.Item>
+    </ListGroup>
+  </div>
+</Card.Body>
+      </Card>
+    </div>
+  )}
+</Container>
+
       <Container>{!isLoading && <ExpenseTracker />}</Container>
     </div>
   );
