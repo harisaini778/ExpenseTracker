@@ -164,12 +164,14 @@ import { BiCheckCircle } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 import { setVerificationStatus } from '../store/auth'; // Import the action
 
+
 const EmailVerify = () => {
   const dispatch = useDispatch();
   const verificationStatus = useSelector((state) => state.verification.status);
   const navigate = useNavigate();
   const [verificationMessage, setVerificationMessage] = useState('');
   const [showSpinner, setShowSpinner] = useState(false);
+  const darkMode = useSelector((state) => state.theme.darkMode);
 
   const logOutHandler = () => {
     localStorage.removeItem('token');
@@ -260,26 +262,28 @@ const EmailVerify = () => {
     <div>
       <div
         style={{
-          backgroundImage: 'linear-gradient(to top, #30cfd0 0%, #330867 100%)',
+          backgroundImage: darkMode ? "black" : "white",
           minHeight: '100vh',
         }}
       >
         <Navbar
           expand="lg"
           style={{
-            backgroundImage: 'linear-gradient(to right, #6a11cb 0%, #2575fc 100%)',
-            fontWeight: 'bolder',
+            backgroundImage: darkMode
+            ? "linear-gradient(to top, #fff1eb 0%, #ace0f9 100%)"
+            : "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
           }}
         >
           <Container>
-            <Navbar.Brand style={{ color: 'white' }}>
+            <Navbar.Brand style={{ color: darkMode ? "black":"white" }}>
               <h2>Expense Tracker</h2>
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="ms-auto">
                 <Nav.Link>
-                  <Button className="btn-warning" onClick={logOutHandler}>
+                  <Button className="btn-warning" onClick={logOutHandler}
+                  >
                     Log Out
                   </Button>
                 </Nav.Link>
@@ -290,15 +294,15 @@ const EmailVerify = () => {
         <Container className="py-4">
           {showSpinner ? (
             <div className="text-center">
-              <Spinner animation="border" variant="light" />
-              <p style={{ color: 'white', marginTop: '20px' }}>Sending verification email...</p>
+              <Spinner animation="border" variant={darkMode ? "light" : "primary"} />
+              <p style={{ color: darkMode ?  "white":'black', marginTop: '20px' }}>Sending verification email...</p>
             </div>
           ) : (
             <div>
               {verificationStatus === 'verified' && (
                 <div className="text-center">
-                  <BiCheckCircle size={150} color="white" />
-                  <p style={{ color: 'white', marginTop: '20px' }}>Email verified!</p>
+                    <BiCheckCircle size={150} color={darkMode ? "white" : "blue"} />
+                  <p style={{ color: darkMode ? "white":'black', marginTop: '20px' }}>Email verified!</p>
                 </div>
               )}
               {verificationStatus === 'not-verified' && (

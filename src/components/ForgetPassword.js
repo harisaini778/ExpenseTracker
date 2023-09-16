@@ -101,7 +101,7 @@ export const ForgetPassword = () => {
         Your password has been reset successfully, Now you can log in with your updated password.
       </Alert>}
       <Container
-      style={{marginTop:"150px",width:"50vw"}}>
+      style={{marginTop:"150px",width:"80vw"}}>
         <div style={{padding:"25px"}}>
           <input
             type="email"
