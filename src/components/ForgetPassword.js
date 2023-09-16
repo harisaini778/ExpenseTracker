@@ -3,6 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Stack, Alert, Button } from "react-bootstrap";
+import { useSelector } from "react-redux";
 
 export const ForgetPassword = () => {
   const [email, setEmail] = useState("");
@@ -10,6 +11,7 @@ export const ForgetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [resetStatus, setResetStatus] = useState("");
   const [showAlert, setShowAlert] = useState(false);
+  const darkMode = useSelector((state) => state.theme.darkMode);
 
   const handlePasswordReset = async () => {
     if (password !== confirmPassword) {
@@ -72,23 +74,24 @@ export const ForgetPassword = () => {
 
   return (
     <div  style={{
-   backgroundImage: "linear-gradient(to top, #30cfd0 0%, #330867 100%)",
+   backgroundImage: darkMode ? "black":"white",
     minHeight: "100vh",
     overflow : "auto",
 }}>
       <Navbar expand="lg" fixed="top"
-      style={{
-        backgroundImage: "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
-       fontWeight: "bolder",
-      }}>
+        style={{
+          backgroundImage: darkMode ?
+            "linear-gradient(to top, #fff1eb 0%, #ace0f9 100%)"
+            : "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)"
+        }}>
         <Container>
-          <Navbar.Brand style={{ color: "white" }}><h4>Welocome To The Expense Tracker!!!</h4></Navbar.Brand>
+          <Navbar.Brand style={{ color: darkMode ? "black":"white" }}><h4>Welocome To The Expense Tracker!!!</h4></Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
               <Stack direction="horizontal">
-                <div  style={{ color: "white" }}> <h5>Click here to go to Login page.</h5></div>
-                <Nav.Link href="LogIn" style={{ color: "yellow" }}><h5>Login</h5></Nav.Link>
+                <div  style={{ color: darkMode ? "black":"white" }}> <h5>Click here to go to Login page.</h5></div>
+                <Nav.Link href="LogIn"  style={{ color: darkMode ? "blue":"yellow" }}><h5>Login</h5></Nav.Link>
               </Stack>
             </Nav>
           </Navbar.Collapse>
@@ -98,7 +101,7 @@ export const ForgetPassword = () => {
         Your password has been reset successfully, Now you can log in with your updated password.
       </Alert>}
       <Container
-      style={{marginTop:"150px",width:"50vw",border:"2px solid white",borderRadius:"10px"}}>
+      style={{marginTop:"150px",width:"50vw"}}>
         <div style={{padding:"25px"}}>
           <input
             type="email"
@@ -122,7 +125,14 @@ export const ForgetPassword = () => {
             style={inputStyle}
           />
   <div className="d-grid gap-4" style={{marginTop:"5px"}}>
-      <Button variant="outline-light" size="md" onClick={handlePasswordReset}>
+            <Button size="lg" onClick={handlePasswordReset}
+            style={{
+                backgroundImage: darkMode
+                  ? "linear-gradient(to top, #fff1eb 0%, #ace0f9 100%)"
+                  : "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
+                color: darkMode ? "black" : "white",
+                textAlign: "center",
+              }}>
         Reset Password
       </Button>
     </div>
