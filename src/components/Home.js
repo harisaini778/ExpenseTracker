@@ -25,14 +25,14 @@ export const Home = () => {
           <Navbar.Brand
             style={{ color: isDarkMode ? "black" : "white" }}>
             <h1>Expense Tracker</h1></Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Toggle aria-controls="basic-navbar-nav" className="m-1" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
               <div style={{ color: isDarkMode ? "black" : "white" }}>
                 Your profile is incomplete
                 <Badge
                   bg="info"
-                  className="ms-2"
+                  className="ms-3"
                   style={{
                     transition: "transform 0.3s",
                     cursor: "pointer",
@@ -60,14 +60,16 @@ export const Home = () => {
         }}
       >
         <Container>
-          <h1 className="display-4 text-info font-weight-bold" style={{
+          <h1 className="display-4 font-weight-bold" style={{
             fontWeight: "bolder", fontSize: "2rem",
-            textShadow: "2px 2px 4px rgba(0,0,0,0.9)"}}>
+            textShadow: "2px 2px 4px rgba(0,0,0,0.2)",
+          color:"black"}}>
             Track Your Expenses.
           </h1>
-          <p className="lead text-info font-weight-bold" style={{
+          <p className="lead font-weight-bold" style={{
             fontWeight: "bolder", fontSize: "1.5rem",
-            textShadow: "2px 2px 4px rgba(0,0,0,0.9)"  }}>
+            textShadow: "2px 2px 4px rgba(0,0,0,0.2)",
+            color:"black"  }}>
             Manage your finances and keep track of your daily expenses with ease.
           </p>
         </Container>
