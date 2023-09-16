@@ -85,10 +85,10 @@ export const UserDetailsDisplay = () => {
             backgroundImage: darkMode
             ? "linear-gradient(to top, #fff1eb 0%, #ace0f9 100%)"
             : "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
-            color: darkMode ? "black":"white",
+            color: darkMode ? "black":"white"
           }}
         >
-          <h2>User Details</h2>
+          <h2 style={{margin:"10px"}}>User Details</h2>
         </Card.Header>
 <Card.Body>
   <div className="user-details">

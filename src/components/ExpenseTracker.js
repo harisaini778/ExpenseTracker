@@ -275,6 +275,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
+import { useSelector } from "react-redux";
 
 export const ExpenseTracker = () => {
   const [moneySpent, setMoneySpent] = useState("");
@@ -287,6 +288,9 @@ export const ExpenseTracker = () => {
   const [balance, setBalance] = useState(0);
   const [isPremium, setIsPremium] = useState(false);
   const [userPhotoUrl, setUserPhotoUrl] = useState(""); // User's photo URL
+  
+  const darkMode = useSelector((state) => state.theme.darkMode);
+
 
   useEffect(() => {
     fetchExpenses();
@@ -478,10 +482,12 @@ export const ExpenseTracker = () => {
       <Container className="mt-4">
         <Card>
           <Card.Header className="text-white text-center"
-          style={{
-        backgroundImage: "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
-       fontWeight: "bolder",
-      }}>
+           style={{
+                backgroundImage: darkMode
+                  ? "linear-gradient(to top, #fff1eb 0%, #ace0f9 100%)"
+                  : "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
+                textAlign: "center",
+              }}>
             <div className="d-flex align-items-center justify-content-center">
               {userPhotoUrl && (
                 <img
@@ -491,7 +497,9 @@ export const ExpenseTracker = () => {
                   style={{ marginRight: "10px", borderRadius: "50%" }}
                 />
               )}
-              <h2 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>
+              <h2 style={{
+                fontSize: "1.5rem", fontWeight: "bold",
+                color: darkMode ? "black" : "white",margin:"10px"}}>
                 Add Daily Expense
               </h2>
             </div>
@@ -541,7 +549,11 @@ export const ExpenseTracker = () => {
                   placeholder="Enter monthly salary"
                 />
               </Form.Group>
-              <Button variant="primary" onClick={handleAddExpense} className="m-4">
+              <Button variant="primary" onClick={handleAddExpense} className="m-4"
+              style={{ backgroundImage: darkMode
+            ? "linear-gradient(to top, #fff1eb 0%, #ace0f9 100%)"
+                  : "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)", color: darkMode ? "black" : "white",
+                fontWeight: "bolder"}}>
                 Add Expense
               </Button>
             </Form>
@@ -552,10 +564,10 @@ export const ExpenseTracker = () => {
       <Container className="mt-4">
         <Card>
           <Card.Header className="text-white text-center"
-          style={{
-        backgroundImage: "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
-       fontWeight: "bolder",
-      }}>
+       style={{ backgroundImage: darkMode
+            ? "linear-gradient(to top, #fff1eb 0%, #ace0f9 100%)"
+                  : "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
+                fontWeight: "bolder"}}>
             <div className="d-flex align-items-center justify-content-center">
               {userPhotoUrl && (
                 <img
@@ -565,7 +577,7 @@ export const ExpenseTracker = () => {
                   style={{ marginRight: "10px", borderRadius: "50%" }}
                 />
               )}
-              <h2 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>
+              <h2 style={{ fontSize: "1.5rem", fontWeight: "bold", color: darkMode ? "black" : "white",margin:"10px" }}>
                 Expenses List
               </h2>
             </div>
@@ -640,20 +652,17 @@ export const ExpenseTracker = () => {
       <Container className="mt-4">
         <Card>
           <Card.Header className="text-white text-center"
-          style={{
-        backgroundImage: "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
-       fontWeight: "bolder",
-      }}>
-            <div className="d-flex align-items-center justify-content-center">
-              {userPhotoUrl && (
-                <img
-                  src={userPhotoUrl}
-                  alt="User"
-                  className="user-photo"
-                  style={{ marginRight: "10px", borderRadius: "50%" }}
-                />
-              )}
-              <h2 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>
+       style={{
+                backgroundImage: darkMode
+                  ? "linear-gradient(to top, #fff1eb 0%, #ace0f9 100%)"
+                  : "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
+                textAlign: "center",
+              }}>
+            <div className="d-flex align-items-center justify-content-center"
+           >
+              <h2 style={{
+                fontSize: "1.5rem", fontWeight: "bold", margin: "10px",
+              color : darkMode ? "black" : "white"}}>
                 Balance
               </h2>
             </div>
@@ -663,7 +672,9 @@ export const ExpenseTracker = () => {
             style={{color:"black",fontWeight:"bolder"}}>Your monthly balance :<span style={{color:"grey"}}> Rs. {balance}</span></h5>
             {balance < 0 && !isPremium && (
               <Button
-                variant="warning"
+                style={{
+                  backgroundImage: "linear-gradient(to right, #f9d423 0%, #ff4e50 100%)", color: "black",
+                fontWeight:"bolder"}}
                 onClick={() => alert("Please upgrade to premium.")}
               >
                 Upgrade to Premium
