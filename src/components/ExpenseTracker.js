@@ -276,6 +276,7 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import { useSelector } from "react-redux";
+import { Alert } from "react-bootstrap";
 
 export const ExpenseTracker = () => {
   const [moneySpent, setMoneySpent] = useState("");
@@ -289,43 +290,49 @@ export const ExpenseTracker = () => {
   const [isPremium, setIsPremium] = useState(false);
   const [userPhotoUrl, setUserPhotoUrl] = useState(""); // User's photo URL
   
+  
   const darkMode = useSelector((state) => state.theme.darkMode);
   const userName = localStorage.getItem("userFullName");
 
-  useEffect(() => {
-    fetchExpenses();
-    // Fetch monthly salary, premium status, and user photo URL here (from local storage or API)
-    const storedMonthlySalary =
-      parseFloat(localStorage.getItem("monthlySalary")) || 0;
-    const storedIsPremium =
-      localStorage.getItem("isPremium") === "true" || false;
-    const storedUserPhotoUrl = localStorage.getItem("userPhotoUrl") || "";
-    setMonthlySalary(storedMonthlySalary);
-    setIsPremium(storedIsPremium);
-    setUserPhotoUrl(storedUserPhotoUrl);
-  }, []);
+  const [showUpgradeAlert, setShowUpgradeAlert] = useState(false); // State to control the display of the alert
 
   useEffect(() => {
-    // Calculate balance based on expenses and salary
-    const totalExpenses = expenses.reduce(
-      (total, expense) => total + parseFloat(expense.moneySpent),
-      0
-    );
+  fetchExpenses();
+  // Fetch monthly salary, premium status, and user photo URL here (from local storage or API)
+  const storedMonthlySalary = parseFloat(localStorage.getItem("monthlySalary")) || 0;
+  const storedIsPremium = localStorage.getItem("isPremium") === "true" || false;
+  const storedUserPhotoUrl = localStorage.getItem("userPhotoUrl") || "";
 
-    // Calculate balance including the monthly salary
-    const balanceWithSalary = monthlySalary - totalExpenses;
+  // Initialize monthlySalary and isPremium with appropriate initial values
+  setMonthlySalary(storedMonthlySalary || 0);
+  setIsPremium(storedIsPremium || false);
+  setUserPhotoUrl(storedUserPhotoUrl);
+}, []);
 
-    // Check if the user needs to be upgraded to premium
-    if (balanceWithSalary < 0 && !isPremium && Math.abs(balanceWithSalary) > 10000) {
-      alert(
-        "Your expenses have exceeded Rs. 10,000. Please upgrade to premium."
-      );
-      // Implement logic to handle the premium upgrade here
-      // You can set setIsPremium(true) and update it in local storage
-    }
+// ... rest of your code
 
-    setBalance(balanceWithSalary);
-  }, [expenses, monthlySalary, isPremium]);
+useEffect(() => {
+  // Calculate balance based on expenses and salary
+  const totalExpenses = expenses.reduce(
+    (total, expense) => total + parseFloat(expense.moneySpent),
+    0
+  );
+
+  // Calculate balance including the monthly salary
+  const balanceWithSalary = monthlySalary - totalExpenses;
+
+  // Check if the user needs to be upgraded to premium
+  if (!isPremium && balanceWithSalary > 10000) {
+    // Show the upgrade alert
+    setShowUpgradeAlert(true);
+  } else {
+    // Hide the upgrade alert if not needed
+    setShowUpgradeAlert(false);
+  }
+
+  setBalance(balanceWithSalary);
+}, [expenses, monthlySalary, isPremium]);
+
 
   const fetchExpenses = async () => {
     try {
@@ -528,60 +535,63 @@ export const ExpenseTracker = () => {
               </h2>
             </div>
           </Card.Header>
-          <Card.Body>
-            <Form>
-              <Form.Group controlId="moneySpent">
-                <Form.Label className="fw-bold">Money Spent</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={moneySpent}
-                  onChange={(e) => setMoneySpent(e.target.value)}
-                  placeholder="Enter amount spent"
-                />
-              </Form.Group>
-              <Form.Group controlId="description">
-                <Form.Label className="fw-bold">Description</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Enter description"
-                />
-              </Form.Group>
-              <Form.Group controlId="category">
-                <Form.Label className="fw-bold">Category</Form.Label>
-                <Form.Select
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                >
-                  <option value="">Select a category</option>
-                  {categories.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat}
-                    </option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
-              <Form.Group controlId="monthlySalary">
-                <Form.Label className="fw-bold">Monthly Salary</Form.Label>
-                <Form.Control
-                  type="number"
-                  value={monthlySalary}
-                  onChange={(e) =>
-                    setMonthlySalary(parseFloat(e.target.value))
-                  }
-                  placeholder="Enter monthly salary"
-                />
-              </Form.Group>
-              <Button variant="primary" onClick={handleAddExpense} className="m-4"
-              style={{ backgroundImage: darkMode
-            ? "linear-gradient(to top, #fff1eb 0%, #ace0f9 100%)"
-                  : "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)", color: darkMode ? "black" : "white",
-                fontWeight: "bolder"}}>
-                Add Expense
-              </Button>
-            </Form>
-          </Card.Body>
+         <Card.Body>
+  <Form>
+    <Form.Group controlId="monthlySalary">
+      <Form.Label className="fw-bold">Monthly Salary</Form.Label>
+      <Form.Control
+        type="number"
+        value={monthlySalary}
+        onChange={(e) =>
+          setMonthlySalary(parseFloat(e.target.value))
+        }
+        placeholder="Enter monthly salary"
+      />
+    </Form.Group>
+    <Form.Group controlId="moneySpent">
+      <Form.Label className="fw-bold">Money Spent</Form.Label>
+      <Form.Control
+        type="text"
+        value={moneySpent}
+        onChange={(e) => setMoneySpent(e.target.value)}
+        placeholder="Enter amount spent"
+      />
+    </Form.Group>
+    <Form.Group controlId="description">
+      <Form.Label className="fw-bold">Description</Form.Label>
+      <Form.Control
+        type="text"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        placeholder="Enter description"
+      />
+    </Form.Group>
+    <Form.Group controlId="category">
+      <Form.Label className="fw-bold">Category</Form.Label>
+      <Form.Select
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
+      >
+        <option value="">Select a category</option>
+        {categories.map((cat) => (
+          <option key={cat} value={cat}>
+            {cat}
+          </option>
+        ))}
+      </Form.Select>
+    </Form.Group>
+    <Button variant="primary" onClick={handleAddExpense} className="m-4"
+      style={{
+        backgroundImage: darkMode
+          ? "linear-gradient(to top, #fff1eb 0%, #ace0f9 100%)"
+          : "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)", color: darkMode ? "black" : "white",
+        fontWeight: "bolder"
+      }}>
+      Add Expense
+    </Button>
+  </Form>
+</Card.Body>
+
         </Card>
              <Button
           variant="success"
@@ -620,71 +630,88 @@ export const ExpenseTracker = () => {
               </h2>
             </div>
           </Card.Header>
-          <Card.Body>
-            {loading ? (
-              <p>Loading expenses...</p>
-            ) : (
-              <div className="table-responsive">
-                <ListGroup className="expense-list">
-                  {expenses.map((expense) => (
-                    <ListGroup.Item
-                      key={expense.id}
-                      className="d-flex justify-content-between align-items-center expense-item"
-                    >
-                      <div className="expense-details">
-                        <div className="expense-info" style={{textAlign:"start"}}>
-                          <span className="expense-label"
-                          style={{textAlign:"start",fontWeight:"bold"}}>Money Spent : </span>{" "}
-                          <span style={{fontWeight : "bolder",color:"grey"}}>Rs </span>{expense.moneySpent}
-                        </div>
-                        <div className="expense-info" style={{textAlign:"start"}}>
-                          <span className="expense-label"
-                          style={{textAlign:"start",fontWeight:"bold"}}>Description :</span>{" "}
-                          {expense.description}
-                        </div>
-                        <div className="expense-info" style={{textAlign:"start"}}>
-                          <span className="expense-label"
-                          style={{textAlign:"start",fontWeight:"bold"}}>Category :</span>{" "}
-                          {expense.category}
-                        </div>
-                      </div>
-                      {editExpenseId === expense.id ? (
-                        <div className="expense-actions">
-                          <Button variant="primary" onClick={handleSaveEdit}>
-                            Save
-                          </Button>
-                          <Button
-                            variant="danger"
-                            onClick={handleCancelEdit}
-                            className="ms-2"
-                          >
-                            Cancel
-                          </Button>
-                        </div>
-                      ) : (
-                        <div className="expense-actions">
-                          <Button
-                            variant="primary"
-                            onClick={() => handleEditClick(expense.id)}
-                            className="me-2 m-1"
-                          >
-                            Edit
-                          </Button>
-                          <Button
-                            variant="danger"
-                            className="me-2 m-1"
-                            onClick={() => handleDeleteExpense(expense.id)}
-                          >
-                            Delete
-                          </Button>
-                        </div>
-                      )}
-                    </ListGroup.Item>
-                  ))}
-                </ListGroup>
+<Card.Body>
+  {loading ? (
+    <p>Loading expenses...</p>
+  ) : (
+    <div className="table-responsive">
+      <ListGroup className="expense-list">
+        {expenses.map((expense) => (
+          <ListGroup.Item
+            key={expense.id}
+            className="d-flex justify-content-between align-items-center expense-item flex-column flex-md-row"
+          >
+            <div className="description-container mb-3 mb-md-0">
+              <div className="expense-details">
+                <div className="expense-info" style={{ textAlign: "start" }}>
+                  <span className="expense-label" style={{ fontWeight: "bold" }}>
+                    Money Spent :{" "}
+                  </span>
+                  <span style={{ fontWeight: "bolder", color: "grey" }}>Rs </span>
+                  {expense.moneySpent}
+                </div>
+                <div className="expense-info" style={{ textAlign: "start" }}>
+                  <span className="expense-label" style={{ fontWeight: "bold" }}>
+                    Description :
+                  </span>{" "}
+                  {expense.description}
+                </div>
+                <div className="expense-info" style={{ textAlign: "start" }}>
+                  <span className="expense-label" style={{ fontWeight: "bold" }}>
+                    Category :
+                  </span>{" "}
+                  {expense.category}
+                </div>
               </div>
-            )}
-          </Card.Body>
+            </div>
+            <div className="d-flex justify-content-md-end">
+              {editExpenseId === expense.id ? (
+                <div className="expense-actions">
+                  <Button
+                    variant="primary"
+                    onClick={handleSaveEdit}
+                    className="m-1"
+                  >
+                    Save
+                  </Button>
+                  <Button
+                    variant="danger"
+                    onClick={handleCancelEdit}
+                    className="m-1"
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              ) : (
+                <div className="d-flex justify-content-md-end">
+                  <Button
+                    variant="primary"
+                    className="m-1"
+                    onClick={() => handleEditClick(expense.id)}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    className="m-1"
+                    variant="danger"
+                    onClick={() => handleDeleteExpense(expense.id)}
+                  >
+                    Delete
+                  </Button>
+                </div>
+              )}
+            </div>
+          </ListGroup.Item>
+        ))}
+      </ListGroup>
+    </div>
+  )}
+</Card.Body>
+
+
+
+
+
         </Card>
       </Container>
 
@@ -706,18 +733,18 @@ export const ExpenseTracker = () => {
               </h2>
             </div>
           </Card.Header>
-          <Card.Body>
-            <h5
-            style={{color:"black",fontWeight:"bolder"}}>Your monthly balance :<span style={{color:"grey"}}> Rs. {balance}</span></h5>
-            {balance < 0 && !isPremium && (
-              <Button
-                style={{
-                  backgroundImage: "linear-gradient(to right, #f9d423 0%, #ff4e50 100%)", color: "black",
-                fontWeight:"bolder"}}
-                onClick={() => alert("Please upgrade to premium.")}
-              >
-                Upgrade to Premium
-              </Button>
+      <Card.Body>
+            <h5>Your monthly balance: <span style={{ color: "grey" }}>Rs. {balance}</span></h5>
+            {showUpgradeAlert && ( // Display the alert conditionally
+              <Alert variant="danger">
+                Your expenses have exceeded Rs. 10,000. Please upgrade to premium.
+                <Button
+                  onClick={() => alert("Implement logic for premium upgrade here")}
+                  variant="warning" className="m-2"
+                >
+                  Upgrade to Premium
+                </Button>
+              </Alert>
             )}
           </Card.Body>
         </Card>
