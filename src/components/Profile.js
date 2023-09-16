@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { Container, Badge, Alert, Navbar,Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-
+import { useSelector } from "react-redux";
 
 export const Profile = () => {
 const [fullName, setFullName] = useState("");
   const [profilePhotoUrl, setProfilePhotoUrl] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const navigate = useNavigate();
+  const darkMode = useSelector((state) => state.theme.darkMode);
+  console.log("In profile darkMode : ", darkMode);
 
   const handleFullNameChange = (e) => {
     setFullName(e.target.value);
@@ -46,17 +48,19 @@ const [fullName, setFullName] = useState("");
   return (
     <div className="profile-container"
        style={{
-       backgroundImage: "linear-gradient(to top, #30cfd0 0%, #330867 100%)",
-      minHeight: "100vh",
+       backgroundColor: darkMode ? "black" : "white",
+       minHeight: "100vh",
 }}
     >
       <Navbar expand="lg"
-       style={{
-        backgroundImage: "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
-       fontWeight: "bolder",
-      }}>
+         style={{
+          backgroundImage: darkMode
+            ? "linear-gradient(to top, #fff1eb 0%, #ace0f9 100%)"
+            : "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
+          fontWeight: "bolder",
+        }}>
        <Container>
-          <Navbar.Brand style={{ color: "white" }}>
+          <Navbar.Brand style={{ color: darkMode ? "black":"white" }}>
             <h2>Welcome To The<br className="d-sm-none" /> Expense Tracker!!!</h2>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -66,6 +70,7 @@ const [fullName, setFullName] = useState("");
               style={{
                 cursor: "pointer",
                 fontWeight: "bold",
+                color : darkMode ? "black" : "white",
               }}
               onClick={() => navigate("/UserDetailsDisplay")} // Navigate when badge is clicked
             >
@@ -84,11 +89,13 @@ const [fullName, setFullName] = useState("");
           </Alert>
         )}
         <div className="mt-4"
-        style={{color:"white",border:"2px solid white",borderRadius:"10px",padding:"25px"}}>
+        style={{color: darkMode? "white" : "black",border:darkMode ? "2px solid white" : "2px solid black",borderRadius:"10px",padding:"25px"}}>
           <h2 style={{marginBottom:"10px"}}>Contact Information</h2>
           <form onSubmit={handleSubmit}>
             <div className="row">
-              <div className="col-md-6 mb-3" style={{fontWeight:"bold"}}>
+              <div className="col-md-6 mb-3" style={{
+                fontWeight: "bold",
+                color: darkMode ? "white" : "black"}}>
                 <label htmlFor="fullName" className="form-label">
                   Full Name:
                 </label>
@@ -101,7 +108,9 @@ const [fullName, setFullName] = useState("");
                   required
                 />
               </div>
-              <div className="col-md-6 mb-3" style={{fontWeight:"bold"}}>
+              <div className="col-md-6 mb-3" style={{
+                fontWeight: "bold",
+              color: darkMode ? "white" : "black"}}>
                 <label htmlFor="profilePhotoUrl" className="form-label">
                   Profile Photo URL:
                 </label>
@@ -116,7 +125,13 @@ const [fullName, setFullName] = useState("");
               </div>
             </div>
              <div className="d-grid gap-2">
-            <Button variant="primary" size="lg" onClick={handleSubmit}>
+              <Button variant="primary" size="lg" onClick={handleSubmit}
+               style={{
+              backgroundImage: darkMode
+            ? "linear-gradient(to top, #fff1eb 0%, #ace0f9 100%)"
+            : "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
+              color: darkMode ? "black" : "white"
+        }}>
              Save
            </Button>
             </div> 

@@ -2,8 +2,12 @@ import React from "react";
 import { Container, Nav, Navbar, Stack, Badge } from "react-bootstrap";
 import my_img from "../components/assets/home_img.jpg";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export const Home = () => {
+
+  const isDarkMode = useSelector((state) => state.theme.darkMode);
+  
   const navigate = useNavigate();
 
   const handleBadgeClick = () => {
@@ -13,16 +17,18 @@ export const Home = () => {
   return (
     <div>
       <Navbar expand="lg"
-       style={{
-        backgroundImage: "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
-       fontWeight: "bolder",
-      }}>
+        style={{
+          backgroundImage: isDarkMode ? "linear-gradient(to top, #fff1eb 0%, #ace0f9 100%)" : "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
+        fontWeight : "bolder"}}
+      >
         <Container>
-          <Navbar.Brand className="text-white"><h1>Expense Tracker</h1></Navbar.Brand>
+          <Navbar.Brand
+            style={{ color: isDarkMode ? "black" : "white" }}>
+            <h1>Expense Tracker</h1></Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              <div className="text-white">
+              <div style={{ color: isDarkMode ? "black" : "white" }}>
                 Your profile is incomplete
                 <Badge
                   bg="info"
@@ -31,6 +37,7 @@ export const Home = () => {
                     transition: "transform 0.3s",
                     cursor: "pointer",
                     fontWeight: "bold",
+                    color : isDarkMode ? "black" : "white",
                   }}
                   onMouseEnter={(e) => (e.target.style.transform = "scale(1.1)")}
                   onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
@@ -53,10 +60,14 @@ export const Home = () => {
         }}
       >
         <Container>
-          <h1 className="display-4 text-secondary font-weight-bold" style={{ fontWeight: "bolder", fontSize: "2rem" }}>
+          <h1 className="display-4 text-info font-weight-bold" style={{
+            fontWeight: "bolder", fontSize: "2rem",
+            textShadow: "2px 2px 4px rgba(0,0,0,0.9)"}}>
             Track Your Expenses.
           </h1>
-          <p className="lead text-secondary font-weight-bold" style={{ fontWeight: "bolder", fontSize: "1.5rem" }}>
+          <p className="lead text-info font-weight-bold" style={{
+            fontWeight: "bolder", fontSize: "1.5rem",
+            textShadow: "2px 2px 4px rgba(0,0,0,0.9)"  }}>
             Manage your finances and keep track of your daily expenses with ease.
           </p>
         </Container>

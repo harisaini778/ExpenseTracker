@@ -3,17 +3,49 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  /* overflow: hidden; */
-  /* Add this to prevent any potential overflow */
+  background-color: #ffffff;
+  /* Set your default background color */
+  color: #000000;
+  /* Set your default text color */
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .App {
   text-align: center;
-      overflow-x: hidden !important;
-      background: linear-gradient(to bottom, #323232 0%, #3F3F3F 40%, #1C1C1C 150%), linear-gradient(to top, rgba(255, 255, 255, 0.40) 0%, rgba(0, 0, 0, 0.25) 200%) !important;
-      background-blend-mode: multiply !important;
-        overflow: auto;
-        height: 100%;
+  overflow-x: hidden !important;
+  overflow: auto;
+  flex-grow: 1;
 }
 
+/* Light theme */
+.App.light {
+  background-color: #ffffff;
+  /* Light theme background color */
+  color: #000000;
+  /* Light theme text color */
+}
 
+/* Dark theme */
+.App.dark {
+  background-color: #000000;
+  /* Dark theme background color */
+  color: #ffffff;
+  /* Dark theme text color */
+}
+
+.icon {
+  font-size: 24px;
+  /* Adjust the size as needed */
+}
+.toggle-button {
+  margin-top: 100px !important;
+  margin-left: auto;
+  margin-right: auto;
+}

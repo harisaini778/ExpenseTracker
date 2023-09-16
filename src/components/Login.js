@@ -1,15 +1,26 @@
 import React, { useState, useRef } from "react";
-import { Button, Card, Row } from "react-bootstrap";
+import { Card, Row } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import { Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { Nav, Navbar } from "react-bootstrap";
+import { useSelector,useDispatch } from 'react-redux'; // Import useSelector to get the theme state
+import { Button,Stack } from "react-bootstrap";
+import { FaSun, FaMoon } from "react-icons/fa";
+import { toggleTheme } from "../store/theme";
 
 export const LogIn = () => {
+
   const [isLogIn, setIsLogin] = useState(false);
   const [isExisting, setIsExisting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const isDarkMode = useSelector((state) => state.theme.darkMode);
+  const dispatch = useDispatch();
+
+  const handleToggleTheme = () => {
+    dispatch(toggleTheme());
+  };
 
   const navigate = useNavigate();
 
@@ -88,45 +99,57 @@ export const LogIn = () => {
 
   return (
     <div
-      className="login-container"
-    style={{
-   backgroundImage: "linear-gradient(to top, #30cfd0 0%, #330867 100%)",
-  minHeight: "100vh",
-  display: "flex",
-  flexDirection: "column",
-}}
-
+     className={`login-container ${isDarkMode ? 'dark' : 'light'}`}
     >
-      <Navbar expand="lg" fixed="top" style={{
-        backgroundImage: "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
-       fontWeight: "bolder",
-      }}>
+      <Navbar expand="lg" fixed="top" style={{backgroundImage : isDarkMode ? "linear-gradient(to top, #fff1eb 0%, #ace0f9 100%)" : "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)"}}>
         <Container fluid>
-          <Navbar.Brand style={{ color: "white" }}><h2>Expense Tracker</h2></Navbar.Brand>
+          <Navbar.Brand style={{ color: isDarkMode ? "black" : "white" }}><h2>Expense Tracker</h2></Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              <div style={{ color: "white" }}>
+              <div style={{ color: isDarkMode ? "black" : "white" }}>
                 <h4>Winner never quits, quitter never wins!</h4>
               </div>
             </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
+
+       <Button onClick={handleToggleTheme} className="m-5 toggle-button"
+        style={{
+          backgroundImage: isDarkMode
+            ? "linear-gradient(to top, #fff1eb 0%, #ace0f9 100%)"
+            : "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
+          color: isDarkMode ? "black" : "white"
+        }}>
+        <Stack direction="horizontal" gap="1">
+          <div className="m-1">
+            {isDarkMode ? <FaSun className="icon" /> : <FaMoon className="icon" />}
+          </div>
+          <div className="m-1">{`Switch to${isDarkMode ? ' light mode' : ' dark mode'}`}</div>
+        </Stack>
+      </Button>
+
       <Container
         className="main-body-login"
         style={{
           maxWidth: "400px",
-          margin: "80px auto 0",
+          margin: "0px auto 0",
         }}
       >
         <Container>
-          <Card className="card-body-login mt-5" >
+          <Card className="card-body-login">
             <Card.Header
               className="card-border-login"
-              style={{ backgroundImage: "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)", color: "white", textAlign: "center" }}
+              style={{
+                backgroundImage: isDarkMode
+                  ? "linear-gradient(to top, #fff1eb 0%, #ace0f9 100%)"
+                  : "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
+                color: isDarkMode ? "black" : "white",
+                textAlign: "center",
+              }}
             >
-              <h2>Welcome to Your Expense Tracker</h2>
+              <h2>Welcome To Your Expense Tracker</h2>
             </Card.Header>
             <Card.Body className="card-border-login" style={{ backgroundColor: "#F9F9F9",paddingBottom:"0px" }}>
               <Form onSubmit={submitFormHandler}>
@@ -134,13 +157,15 @@ export const LogIn = () => {
                   <Form.Label
                     className="mb-2"
                     style={{
-                      textAlign: "center", color: "#0E4C92",
+                      textAlign: "center", color: isDarkMode? "black" : "#0E4C92",
                  }}
                   >
                     <h5>Your Email</h5>
                   </Form.Label>
                   <Form.Control
-                    style={{ textAlign: "center", color: "#0E4C92" }}
+                      style={{
+                      textAlign: "center", color: isDarkMode? "black" : "#0E4C92",
+                 }}
                     type="email"
                     className="mb-2 form-control"
                     onFocus={handleFocus}
@@ -150,12 +175,16 @@ export const LogIn = () => {
                   />
                   <Form.Label
                     className="mb-2"
-                    style={{ textAlign: "center", color: "#0E4C92" }}
+                    style={{
+                      textAlign: "center", color: isDarkMode? "black" : "#0E4C92",
+                 }}
                   >
                     <h5>Your Password</h5>
                   </Form.Label>
                   <Form.Control
-                    style={{ textAlign: "center", color: "#0E4C92" }}
+                     style={{
+                      textAlign: "center", color: isDarkMode? "black" : "#0E4C92",
+                 }}
                     type="password"
                     className="mb-2 form-control"
                     onFocus={handleFocus}
@@ -166,7 +195,7 @@ export const LogIn = () => {
                   {isLogIn || isExisting ? (
                     <div className="d-grid login-btn">
                       <Button
-                        variant="outline-primary"
+                        variant={isDarkMode ? "outline-dark" : "outline-primary"}
                         className="m-2 btn-sm"
                         type="submit"
                       >
@@ -176,7 +205,7 @@ export const LogIn = () => {
                   ) : (
                     <div className="d-grid login-btn">
                       <Button
-                        variant="outline-primary"
+                            variant={isDarkMode ? "outline-dark" : "outline-primary"}
                         className="m-2 btn-sm"
                           type="submit"
                       >
@@ -221,11 +250,7 @@ export const LogIn = () => {
                 </Form.Group>
               </Form>
             </Card.Body>
-            <Card.Footer
-              style={{
-                backgroundColor: "#F9F9F9",
-              }}
-            >
+            <Card.Footer>
               {!isExisting ? (
                 <p
                   onClick={existingAccountHandler}

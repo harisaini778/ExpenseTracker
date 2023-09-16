@@ -3,11 +3,13 @@ import { Container, Navbar, Nav, Button, Badge, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { ExpenseTracker } from "./ExpenseTracker";
 import { ListGroup } from "react-bootstrap";
+import { useSelector } from "react-redux";
 
 export const UserDetailsDisplay = () => {
  const [userData, setUserData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  const darkMode = useSelector((state) => state.theme.darkMode);
 
   useEffect(() => {
     // Retrieve user data from localStorage
@@ -37,19 +39,21 @@ export const UserDetailsDisplay = () => {
   return (
     <div
       style={{
-        backgroundImage: "linear-gradient(to top, #30cfd0 0%, #330867 100%)",
+        backgroundColor : darkMode ? "black" : "white",
         minHeight: "100vh",
       }}
     >
       <Navbar
         expand="lg"
-        style={{
-          backgroundImage: "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
+       style={{
+          backgroundImage: darkMode
+            ? "linear-gradient(to top, #fff1eb 0%, #ace0f9 100%)"
+            : "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
           fontWeight: "bolder",
         }}
       >
         <Container>
-          <Navbar.Brand style={{ color: "white" }}>
+          <Navbar.Brand style={{ color: darkMode ?  "black":"white" }}>
             <h2>Expense Tracker</h2>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -57,7 +61,7 @@ export const UserDetailsDisplay = () => {
             <Nav className="ms-auto">
               <Badge
                 className="d-flex align-items-center bg-info"
-                style={{ borderRadius: "10px" }}
+                style={{ borderRadius: "10px",color: darkMode ? "black" : "white" }}
               >
                 <h6>Your profile is now 100% complete.</h6>
               </Badge>
@@ -78,9 +82,10 @@ export const UserDetailsDisplay = () => {
       <Card style={{ marginTop: "80px" }}>
         <Card.Header
           style={{
-            backgroundImage:
-              "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
-            color: "white",
+            backgroundImage: darkMode
+            ? "linear-gradient(to top, #fff1eb 0%, #ace0f9 100%)"
+            : "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
+            color: darkMode ? "black":"white",
           }}
         >
           <h2>User Details</h2>
