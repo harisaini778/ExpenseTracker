@@ -477,6 +477,30 @@ export const ExpenseTracker = () => {
     "Travel",
   ];
 
+   const generateCSV = () => {
+    const csvData = [];
+    csvData.push("Money Spent,Description,Category");
+    
+    expenses.forEach((expense) => {
+      const row = `${expense.moneySpent},${expense.description},${expense.category}`;
+      csvData.push(row);
+    });
+
+    return csvData.join("\n");
+  };
+
+    const downloadCSV = () => {
+    const csvContent = generateCSV();
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "expenses.csv";
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
+
   return (
     <div style={{ overflowX: "hidden" }}>
       <Container className="mt-4">
@@ -559,6 +583,20 @@ export const ExpenseTracker = () => {
             </Form>
           </Card.Body>
         </Card>
+             <Button
+          variant="success"
+          onClick={downloadCSV}
+          className="m-4"
+          style={{
+            backgroundImage: darkMode
+              ? "linear-gradient(to top, #fff1eb 0%, #ace0f9 100%)"
+              : "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
+            color: darkMode ? "black" : "white",
+            fontWeight: "bolder",
+          }}
+        >
+          Download File
+        </Button>
       </Container>
 
       <Container className="mt-4">

@@ -195,7 +195,12 @@ export const LogIn = () => {
                   {isLogIn || isExisting ? (
                     <div className="d-grid login-btn">
                       <Button
-                        variant={isDarkMode ? "outline-dark" : "outline-primary"}
+                                    style={{
+            backgroundImage: isDarkMode
+            ? "linear-gradient(to top, #fff1eb 0%, #ace0f9 100%)"
+            : "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
+            color: isDarkMode ? "black":"white"
+          }}
                         className="m-2 btn-sm"
                         type="submit"
                       >
@@ -205,7 +210,12 @@ export const LogIn = () => {
                   ) : (
                     <div className="d-grid login-btn">
                       <Button
-                            variant={isDarkMode ? "outline-dark" : "outline-primary"}
+                                         style={{
+            backgroundImage: isDarkMode
+            ? "linear-gradient(to top, #fff1eb 0%, #ace0f9 100%)"
+            : "linear-gradient(to right, #6a11cb 0%, #2575fc 100%)",
+            color: isDarkMode ? "black":"white"
+          }}
                         className="m-2 btn-sm"
                           type="submit"
                       >
