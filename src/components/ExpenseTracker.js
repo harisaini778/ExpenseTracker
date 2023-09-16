@@ -666,12 +666,13 @@ export const ExpenseTracker = () => {
                           <Button
                             variant="primary"
                             onClick={() => handleEditClick(expense.id)}
-                            className="me-2"
+                            className="me-2 m-1"
                           >
                             Edit
                           </Button>
                           <Button
                             variant="danger"
+                            className="me-2 m-1"
                             onClick={() => handleDeleteExpense(expense.id)}
                           >
                             Delete
