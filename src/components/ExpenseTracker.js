@@ -290,7 +290,7 @@ export const ExpenseTracker = () => {
   const [userPhotoUrl, setUserPhotoUrl] = useState(""); // User's photo URL
   
   const darkMode = useSelector((state) => state.theme.darkMode);
-
+  const userName = localStorage.getItem("userFullName");
 
   useEffect(() => {
     fetchExpenses();
@@ -330,7 +330,7 @@ export const ExpenseTracker = () => {
   const fetchExpenses = async () => {
     try {
       const response = await fetch(
-        "https://expensetracker-4ddaf-default-rtdb.firebaseio.com/expenses.json"
+        `https://expensetracker-4ddaf-default-rtdb.firebaseio.com/${userName}.json`
       );
 
       if (response.ok) {
@@ -364,7 +364,7 @@ export const ExpenseTracker = () => {
 
     try {
       const response = await fetch(
-        "https://expensetracker-4ddaf-default-rtdb.firebaseio.com/expenses.json",
+        `https://expensetracker-4ddaf-default-rtdb.firebaseio.com/${userName}.json`,
         {
           method: "POST",
           headers: {
@@ -419,7 +419,7 @@ export const ExpenseTracker = () => {
 
     try {
       const response = await fetch(
-        `https://expensetracker-4ddaf-default-rtdb.firebaseio.com/expenses/${editExpenseId}.json`,
+        `https://expensetracker-4ddaf-default-rtdb.firebaseio.com/${userName}/${editExpenseId}.json`,
         {
           method: "PUT",
           headers: {
@@ -447,7 +447,7 @@ export const ExpenseTracker = () => {
   const handleDeleteExpense = async (expenseId) => {
     try {
       const response = await fetch(
-        `https://expensetracker-4ddaf-default-rtdb.firebaseio.com/expenses/${expenseId}.json`,
+        `https://expensetracker-4ddaf-default-rtdb.firebaseio.com/${userName}/${expenseId}.json`,
         {
           method: "DELETE",
         }
