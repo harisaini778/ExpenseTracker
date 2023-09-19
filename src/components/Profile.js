@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Container, Badge, Alert, Navbar,Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector} from "react-redux";
+
+
 
 export const Profile = () => {
 const [fullName, setFullName] = useState("");
@@ -19,28 +21,26 @@ const [fullName, setFullName] = useState("");
     setProfilePhotoUrl(e.target.value);
   };
 
-  const updateUserProfile = async () => {
-    try {
-      // Your code for updating user profile...
+   const updateUserProfile = () => {
+  
+    setTimeout(() => {
+      try {
 
-      // Save user data to localStorage
-      localStorage.setItem("userFullName", fullName);
-      localStorage.setItem("userProfilePhotoUrl", profilePhotoUrl);
+        localStorage.setItem('userFullName', fullName);
+        localStorage.setItem('userProfilePhotoUrl', profilePhotoUrl);
 
-      // Show the success alert
-      setShowAlert(true);
+        setShowAlert(true);
 
-      // Navigate to UserDetailsProfiles upon successful update
-      navigate("/UserDetailsDisplay"); // Updated route
-    } catch (error) {
-      console.error("Error updating user profile:", error);
-    }
+
+        navigate('/EmailVerify');
+      } catch (error) {
+        console.error('Error updating user profile:', error);
+      }
+    }, 1000); 
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Call the updateUserProfile function to update user details
     updateUserProfile();
   };
 

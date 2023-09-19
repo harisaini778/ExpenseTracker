@@ -297,7 +297,7 @@ export const ExpenseTracker = () => {
   const [showUpgradeAlert, setShowUpgradeAlert] = useState(false); // State to control the display of the alert
 
   useEffect(() => {
-  fetchExpenses();
+    fetchExpenses();
   // Fetch monthly salary, premium status, and user photo URL here (from local storage or API)
   const storedMonthlySalary = parseFloat(localStorage.getItem("monthlySalary")) || 0;
   const storedIsPremium = localStorage.getItem("isPremium") === "true" || false;
@@ -309,7 +309,8 @@ export const ExpenseTracker = () => {
   setUserPhotoUrl(storedUserPhotoUrl);
 }, []);
 
-// ... rest of your code
+
+
 
 useEffect(() => {
   // Calculate balance based on expenses and salary
@@ -322,7 +323,7 @@ useEffect(() => {
   const balanceWithSalary = monthlySalary - totalExpenses;
 
   // Check if the user needs to be upgraded to premium
-  if (!isPremium && balanceWithSalary > 10000) {
+  if (!isPremium && totalExpenses > 10000) {
     // Show the upgrade alert
     setShowUpgradeAlert(true);
   } else {
@@ -367,6 +368,7 @@ useEffect(() => {
       moneySpent,
       description,
       category,
+      monthlySalary,
     };
 
     try {
@@ -422,6 +424,7 @@ useEffect(() => {
       moneySpent,
       description,
       category,
+      monthlySalary,
     };
 
     try {

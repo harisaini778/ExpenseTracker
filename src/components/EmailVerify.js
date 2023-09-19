@@ -164,7 +164,6 @@ import { BiCheckCircle } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 import { setVerificationStatus } from '../store/auth'; // Import the action
 
-
 const EmailVerify = () => {
   const dispatch = useDispatch();
   const verificationStatus = useSelector((state) => state.verification.status);
@@ -178,7 +177,7 @@ const EmailVerify = () => {
     navigate('/LogIn');
   };
 
-  const sendEmailVerification = () => {
+   const sendEmailVerification = () => {
     setShowSpinner(true); // Show the spinner
     setVerificationMessage(
       'A verification email has been sent to your registered email address. Please check your email for the verification link. Thank you.'

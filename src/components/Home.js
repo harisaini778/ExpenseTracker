@@ -1,6 +1,6 @@
 import React from "react";
-import { Container, Nav, Navbar, Stack, Badge } from "react-bootstrap";
-import my_img from "../components/assets/home_img.jpg";
+import { Container, Nav, Navbar, Badge } from "react-bootstrap";
+import my_img from "../components/assets/my_img2.jpg";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -59,17 +59,20 @@ export const Home = () => {
           minHeight: "100vh",
         }}
       >
-        <Container>
+        <Container className="mt-5">
           <h1 className="display-4 font-weight-bold" style={{
-            fontWeight: "bolder", fontSize: "2rem",
+            fontWeight: "bolder", fontSize: "4rem",
             textShadow: "2px 2px 4px rgba(0,0,0,0.2)",
-          color:"black"}}>
+          color:isDarkMode ? "black" : "blue"}}>
             Track Your Expenses.
           </h1>
           <p className="lead font-weight-bold" style={{
-            fontWeight: "bolder", fontSize: "1.5rem",
+            fontWeight: "bolder", fontSize: "2.0rem",
             textShadow: "2px 2px 4px rgba(0,0,0,0.2)",
-            color:"black"  }}>
+            color: isDarkMode ? "black" : "blue",
+          }}
+
+>
             Manage your finances and keep track of your daily expenses with ease.
           </p>
         </Container>
